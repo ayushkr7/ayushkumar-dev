@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Switch to dark theme">
+  <Icon name="moon" class="theme-toggle__moon" />
+  <Icon name="sun" class="theme-toggle__sun" />
+</button>
+
+<style>
+  /* Icon follows [data-theme] (set before first paint), so it is right before JS runs. */
+  .theme-toggle :global(.theme-toggle__sun) {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__sun) {
+    display: block;
+  }
+
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__moon) {
+    display: none;
+  }
+</style>
+
+<script>
+  type Theme = 'light' | 'dark';
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+  const current = (): Theme => (root.dataset.theme === 'dark' ? 'dark' : 'light');
+
+  function syncLabels() {
+    const label = current() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    buttons.forEach((button) => button.setAttribute('aria-label', label));
+  }
+
+  function apply(theme: Theme, persist: boolean) {
+    root.dataset.theme = theme;
+    if (persist) {
+      try {
+        localStorage.setItem('theme', theme);
+      } catch {
+        /* storage unavailable (private mode) — theme still applies for this page */
+      }
+    }
+    syncLabels();
+  }
+
+  buttons.forEach((button) =>
+    button.addEventListener('click', () => apply(current() === 'dark' ? 'light' : 'dark', true)),
+  );
+
+  // With no saved choice, keep following the OS setting live.
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem('theme');
+    } catch {}
+    if (saved !== 'light' && saved !== 'dark') apply(event.matches ? 'dark' : 'light', false);
+  });
+
+  // Keep tabs in sync when the choice changes elsewhere.
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'theme' && (event.newValue === 'light' || event.newValue === 'dark'))
+      apply(event.newValue, false);
+  });
+
+  syncLabels();
+</script>

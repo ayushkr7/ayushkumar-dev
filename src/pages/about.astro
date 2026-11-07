@@ -1,0 +1,452 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { about } from '../data/about';
+import { formatMonthYear, isoDate } from '../lib/posts';
+
+const socials = [
+  { label: 'GitHub', href: about.social.github },
+  { label: 'LinkedIn', href: about.social.linkedin },
+  { label: 'Mastodon', href: about.social.mastodon },
+].filter((link): link is { label: string; href: string } => Boolean(link.href));
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${about.name}: ${about.role} at ${about.company}. Bio, current focus, experience, tools and how to get in touch.`}
+  section="about"
+>
+  <div class="container about">
+    <section class="intro">
+      {
+        about.portrait ? (
+          <Image
+            class="portrait"
+            src={about.portrait}
+            alt={about.portraitAlt}
+            width={176}
+            height={176}
+            loading="eager"
+          />
+        ) : (
+          <div class="portrait portrait--initials" aria-hidden="true">
+            {about.initials}
+          </div>
+        )
+      }
+      <div class="intro__text">
+        <h1 class="page-title">Hi, I’m {about.name}.</h1>
+        <p class="intro__role">{about.role} at {about.company} · {about.location}</p>
+      </div>
+    </section>
+
+    <div class="bio">
+      {about.bio.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    <section class="block" aria-labelledby="now">
+      <div class="section-head">
+        <h2 id="now" class="section-label">Now</h2>
+        <span class="section-head__meta">
+          Updated <time datetime={isoDate(about.now.updated)}>{formatMonthYear(about.now.updated)}</time>
+        </span>
+      </div>
+      <ul class="now">
+        {
+          about.now.items.map((item) => (
+            <li>
+              <span class="now__marker" aria-hidden="true">
+                →
+              </span>
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="block" aria-labelledby="experience">
+      <div class="section-head">
+        <h2 id="experience" class="section-label">Experience</h2>
+      </div>
+      <ol class="jobs">
+        {
+          about.experience.map((job) => (
+            <li class="job">
+              <span class="job__when">{job.when}</span>
+              <div>
+                <p class="job__role">
+                  {job.role} <span class="job__company">· {job.company}</span>
+                </p>
+                <p class="job__summary">{job.summary}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      {
+        about.resume && (
+          <a class="resume" href={about.resume} download>
+            Download résumé (PDF) ↓
+          </a>
+        )
+      }
+    </section>
+
+    <section class="block" aria-labelledby="uses">
+      <div class="section-head">
+        <h2 id="uses" class="section-label">Uses &amp; colophon</h2>
+      </div>
+      <dl class="uses">
+        {
+          about.uses.map((item) => (
+            <div class="uses__row">
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="contact" aria-labelledby="contact">
+      <h2 id="contact" class="contact__title">Get in touch</h2>
+      <p class="contact__text">
+        Questions about a post, a bug in one of my projects, or just want to say hi — email is best. I usually reply
+        within a few days.
+      </p>
+      <div class="contact__actions">
+        <a class="btn-primary" href={`mailto:${about.email}`}>
+          <Icon name="mail" />
+          {about.email}
+        </a>
+        <button type="button" class="btn-secondary" data-copy-email={about.email}>
+          <Icon name="copy" size={16} />
+          <span data-copy-email-label aria-live="polite">Copy email</span>
+        </button>
+      </div>
+      <div class="contact__links">
+        {
+          socials.map((link) => (
+            <a href={link.href} target="_blank" rel="me noopener">
+              {link.label} ↗<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          ))
+        }
+        <a href="/rss.xml">RSS feed</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-top: 36px;
+    padding-bottom: 96px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .portrait {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .portrait--initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .intro__text {
+    min-width: 0;
+  }
+
+  .intro__role {
+    margin: 10px 0 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .bio {
+    margin-top: 36px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--body);
+  }
+
+  .bio p {
+    margin: 0 0 20px;
+  }
+
+  .bio p:last-child {
+    margin-bottom: 0;
+  }
+
+  .block {
+    margin-top: 56px;
+  }
+
+  .now {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .now li {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .now__marker {
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  .jobs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .job {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .job__when {
+    padding-top: 2px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .job__role {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .job__company {
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .job__summary {
+    margin: 4px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .resume {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .resume:hover {
+    text-decoration: underline;
+  }
+
+  .uses {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0;
+  }
+
+  .uses__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .uses dt {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .uses dd {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .contact {
+    margin-top: 56px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--card);
+  }
+
+  .contact__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .contact__text {
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: var(--radius-card);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-strong);
+  }
+
+  .contact__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    margin-top: 14px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+
+  .contact__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .contact__links a:hover {
+    color: var(--text);
+  }
+
+  @media (min-width: 768px) {
+    .about {
+      padding-top: 72px;
+    }
+
+    .intro {
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .portrait {
+      width: 88px;
+      height: 88px;
+    }
+
+    .portrait--initials {
+      font-size: 22px;
+    }
+
+    .bio {
+      font-size: 17px;
+    }
+
+    .job {
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .uses {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 32px;
+    }
+
+    .contact {
+      padding: 28px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
+    const label = button.querySelector('[data-copy-email-label]');
+    let timer: number | undefined;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyEmail ?? '');
+      } catch {
+        return;
+      }
+      if (!label) return;
+      label.textContent = 'Copied';
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => (label.textContent = 'Copy email'), 1500);
+    });
+  });
+</script>

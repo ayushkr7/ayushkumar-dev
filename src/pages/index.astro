@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getPosts, getTags, tagUrl } from '../lib/posts';
+import { about } from '../data/about';
+
+const posts = await getPosts();
+const latest = posts.slice(0, 5);
+const topics = getTags(posts);
+---
+
+<BaseLayout section="writing" search>
+  <section class="container intro">
+    <p class="intro__prompt">$ cat ~/about.txt</p>
+    <h1 class="intro__title">Notes on building fast, durable software for the web.</h1>
+    <p class="intro__lead">
+      I’m {about.name}, a Software Engineer writing about TypeScript, web performance and the tools I use to ship.
+    </p>
+    <div class="intro__links">
+      <a class="intro__primary" href="/about/"> About me → </a>
+      <a class="intro__secondary" href="/rss.xml"> RSS feed </a>
+      {
+        about.social.github && (
+          <a class="intro__secondary" href={about.social.github} rel="me noopener" target="_blank">
+            GitHub
+          </a>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="container" aria-labelledby="latest">
+    <div class="latest-head">
+      <h2 id="latest" class="section-label">Latest posts</h2>
+      <a class="latest-head__all" href="/blog/"> View all → </a>
+    </div>
+    <PostList posts={latest} />
+  </section>
+
+  <section class="container topics" aria-labelledby="topics">
+    <h2 id="topics" class="section-label">Topics</h2>
+    <ul class="topics__list" role="list">
+      {
+        topics.map((tag) => (
+          <li>
+            <a class="topic" href={tagUrl(tag)}>
+              {tag}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-top: 48px;
+    padding-bottom: 40px;
+  }
+
+  .intro__prompt {
+    margin: 0 0 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .intro__title {
+    max-width: 640px;
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .intro__lead {
+    max-width: 580px;
+    margin: 20px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .intro__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  .intro__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .intro__primary {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .intro__primary:hover {
+    text-decoration: underline;
+  }
+
+  .intro__secondary {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 3px;
+  }
+
+  .intro__secondary:hover {
+    color: var(--text);
+    text-decoration-color: currentColor;
+  }
+
+  .latest-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .latest-head__all {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .latest-head__all:hover {
+    color: var(--text);
+  }
+
+  .topics {
+    padding-top: 64px;
+    padding-bottom: 80px;
+  }
+
+  .topics .section-label {
+    margin-bottom: 16px;
+  }
+
+  .topics__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .topic {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-decoration: none;
+  }
+
+  .topic:hover {
+    color: var(--accent);
+  }
+
+  @media (min-width: 768px) {
+    .intro {
+      padding-top: 112px;
+      padding-bottom: 72px;
+    }
+
+    .intro__title {
+      font-size: 44px;
+    }
+
+    .intro__lead {
+      font-size: 18px;
+    }
+  }
+</style>

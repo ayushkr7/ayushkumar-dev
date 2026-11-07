@@ -1,0 +1,258 @@
+---
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { site } from '../data/site';
+
+export type Section = 'writing' | 'projects' | 'about';
+
+interface Props {
+  current?: Section;
+  /** Header search button — Home and Article only. */
+  showSearch?: boolean;
+}
+
+const { current, showSearch = false } = Astro.props;
+
+const nav: { key: Section; label: string; href: string }[] = [
+  { key: 'writing', label: 'Writing', href: '/blog/' },
+  { key: 'projects', label: 'Projects', href: '/projects/' },
+  { key: 'about', label: 'About', href: '/about/' },
+];
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="logo" href="/">
+      <span class="logo__block" aria-hidden="true"></span>{site.name}
+    </a>
+
+    <div class="actions">
+      <nav class="primary-nav" aria-label="Primary">
+        {
+          nav.map((item) => (
+            <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+      <span class="divider" aria-hidden="true"></span>
+
+      {
+        showSearch && (
+          <button
+            type="button"
+            class="icon-btn"
+            data-search-open
+            aria-label="Search posts"
+            aria-haspopup="dialog"
+            aria-keyshortcuts="Control+K Meta+K"
+          >
+            <Icon name="search" />
+          </button>
+        )
+      }
+
+      <ThemeToggle />
+
+      <button
+        type="button"
+        class="icon-btn menu-btn"
+        data-menu-button
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="menu" class="menu-btn__open" />
+        <Icon name="close" class="menu-btn__close" />
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile" data-menu hidden>
+    {
+      nav.map((item) => (
+        <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+    <a href="/rss.xml">RSS feed</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bar {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .logo__block {
+    display: inline-block;
+    width: 8px;
+    height: 17px;
+    background: var(--accent);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .primary-nav,
+  .divider {
+    display: none;
+  }
+
+  .primary-nav a {
+    padding: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .primary-nav a:hover,
+  .primary-nav a[aria-current='page'] {
+    color: var(--text);
+  }
+
+  .primary-nav a[aria-current='page'] {
+    font-weight: 500;
+  }
+
+  .divider {
+    width: 1px;
+    height: 20px;
+    margin: 0 8px;
+    background: var(--border);
+  }
+
+  .menu-btn :global(.menu-btn__close) {
+    display: none;
+  }
+
+  .menu-btn[aria-expanded='true'] {
+    color: var(--text);
+  }
+
+  .menu-btn[aria-expanded='true'] :global(.menu-btn__open) {
+    display: none;
+  }
+
+  .menu-btn[aria-expanded='true'] :global(.menu-btn__close) {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 20px 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .mobile-menu[hidden] {
+    display: none;
+  }
+
+  .mobile-menu a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    font-size: 16px;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-menu a:last-child {
+    border-bottom: 0;
+  }
+
+  .mobile-menu a[aria-current='page'] {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .mobile-menu a:focus-visible {
+    outline-offset: -2px;
+  }
+
+  @media (min-width: 768px) {
+    .primary-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .divider {
+      display: block;
+    }
+
+    .menu-btn,
+    .mobile-menu,
+    .mobile-menu[hidden] {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  if (button && menu) {
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.hidden = !open;
+    };
+
+    button.addEventListener('click', () => setOpen(!isOpen()));
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+
+    // Opening the search pop-up closes the menu.
+    document.addEventListener('search:open', () => setOpen(false));
+
+    // Growing to desktop width closes it.
+    matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+
+    // Restored from the back/forward cache: start closed again.
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) setOpen(false);
+    });
+  }
+</script>

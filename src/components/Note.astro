@@ -1,0 +1,46 @@
+---
+/**
+ * Note callout for MDX posts:
+ *   import Note from '../../components/Note.astro';
+ *   <Note>a component without a client directive ships no JavaScript.</Note>
+ */
+import Icon from './Icon.astro';
+---
+
+<aside class="note" aria-label="Note">
+  <Icon name="info" class="note__icon" />
+  <div class="note__text">
+    <strong>Note:</strong>
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .note {
+    display: flex;
+    gap: 12px;
+    margin: 0 0 28px;
+    padding: 16px 18px;
+    border: 1px solid var(--note-border);
+    border-radius: var(--radius-card);
+    background: var(--note-bg);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .note :global(.note__icon) {
+    margin-top: 2px;
+    color: var(--accent);
+  }
+
+  .note__text {
+    min-width: 0;
+  }
+
+  /* MDX wraps slot text in <p>; keep it on the same line as "Note:". */
+  .note__text :global(p) {
+    display: inline;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,330 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { about } from '../data/about';
+import { postUrl } from '../lib/posts';
+
+type Project = CollectionEntry<'projects'>;
+type Link = { label: string; href: string; external: boolean };
+
+const projects = await getCollection('projects');
+
+const statusRank = { active: 0, maintained: 1, archived: 2 } as const;
+const lastUpdate = (p: Project) => (p.data.updated ?? new Date(Date.UTC(p.data.year, 0, 1))).valueOf();
+
+// Active before Maintained, then most recently updated first.
+const current = projects
+  .filter((p) => p.data.status !== 'archived')
+  .sort((a, b) => statusRank[a.data.status] - statusRank[b.data.status] || lastUpdate(b) - lastUpdate(a));
+
+const archived = projects
+  .filter((p) => p.data.status === 'archived')
+  .sort((a, b) => b.data.year - a.data.year || a.data.name.localeCompare(b.data.name));
+
+async function linksFor(project: Project): Promise<Link[]> {
+  const { demo, source, npm, post } = project.data;
+  const links: Link[] = [];
+  if (demo) links.push({ label: 'Live demo ↗', href: demo, external: true });
+  if (source) links.push({ label: 'Source ↗', href: source, external: true });
+  if (npm) links.push({ label: 'npm ↗', href: npm, external: true });
+  if (post) {
+    const entry = await getEntry(post);
+    if (entry && !(import.meta.env.PROD && entry.data.draft)) {
+      links.push({ label: 'Write-up →', href: postUrl(entry.id), external: false });
+    }
+  }
+  return links;
+}
+
+const cards = await Promise.all(current.map(async (project) => ({ project, links: await linksFor(project) })));
+const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Archived' } as const;
+---
+
+<BaseLayout
+  title="Projects"
+  description="Small open-source tools for the web: what each one does, what it is built with, and where to find the code."
+  section="projects"
+>
+  <div class="container projects">
+    <h1 class="page-title">Projects</h1>
+    <p class="page-lead intro">
+      Small tools for the web that I build and maintain. Most are open source — the code is on <a
+        href={about.social.github ?? 'https://github.com'}
+        target="_blank"
+        rel="noopener">GitHub</a
+      >.
+    </p>
+
+    <section class="group" aria-labelledby="current">
+      <div class="section-head group__head">
+        <h2 id="current" class="section-label">Current</h2>
+        <span class="section-head__meta">{current.length} {current.length === 1 ? 'project' : 'projects'}</span>
+      </div>
+
+      <div class="cards">
+        {
+          cards.map(({ project, links }) => (
+            <article class="card">
+              <div class="card__head">
+                <h3 class="card__name">{project.data.name}</h3>
+                <span class={`status status--${project.data.status}`}>
+                  <span class="status__dot" aria-hidden="true" />
+                  {statusLabel[project.data.status]}
+                </span>
+              </div>
+              <p class="card__desc">{project.data.description}</p>
+              {project.data.stack.length > 0 && (
+                <ul class="stack" aria-label="Built with">
+                  {project.data.stack.map((tech) => (
+                    <li>{tech}</li>
+                  ))}
+                </ul>
+              )}
+              {links.length > 0 && (
+                <div class="card__links">
+                  {links.map((link) =>
+                    link.external ? (
+                      <a href={link.href} target="_blank" rel="noopener">
+                        {link.label}
+                        <span class="visually-hidden"> (opens in a new tab)</span>
+                      </a>
+                    ) : (
+                      <a href={link.href}>{link.label}</a>
+                    ),
+                  )}
+                </div>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      archived.length > 0 && (
+        <section class="group group--archived" aria-labelledby="archived">
+          <div class="section-head">
+            <h2 id="archived" class="section-label">
+              Archived
+            </h2>
+            <span class="section-head__meta">No longer maintained</span>
+          </div>
+          <ol class="archived">
+            {archived.map((project) => (
+              <li class="archived__row">
+                <span class="archived__year">{project.data.year}</span>
+                <p class="archived__text">
+                  <span class="archived__name">{project.data.name}</span>
+                  <span class="archived__desc"> — {project.data.description}</span>
+                </p>
+                {project.data.source && (
+                  <a class="archived__source" href={project.data.source} target="_blank" rel="noopener">
+                    Source ↗<span class="visually-hidden"> for {project.data.name} (opens in a new tab)</span>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .projects {
+    padding-top: 32px;
+    padding-bottom: 96px;
+  }
+
+  .intro {
+    max-width: 600px;
+  }
+
+  .group {
+    margin-top: 48px;
+  }
+
+  .group__head {
+    margin-bottom: 20px;
+  }
+
+  .group--archived {
+    margin-top: 56px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--card);
+  }
+
+  .card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .card__name {
+    margin: 0;
+    min-width: 0;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .status__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+
+  .status--active .status__dot {
+    background: var(--live);
+  }
+
+  .card__desc {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack li {
+    padding: 2px 8px;
+    border-radius: var(--radius-chip);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 18px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .card__links a:hover {
+    text-decoration: underline;
+  }
+
+  .archived {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archived__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .archived__year {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .archived__text {
+    margin: 0;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .archived__name {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .archived__desc {
+    color: var(--muted);
+  }
+
+  .archived__source {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    min-height: 36px;
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .archived__source:hover {
+    color: var(--text);
+  }
+
+  @media (min-width: 768px) {
+    .projects {
+      padding-top: 64px;
+    }
+
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .archived__row {
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 20px;
+      padding: 12px 0;
+    }
+  }
+</style>

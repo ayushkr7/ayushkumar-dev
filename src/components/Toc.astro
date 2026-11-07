@@ -1,0 +1,157 @@
+---
+import type { MarkdownHeading } from 'astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+  /** "sidebar" = sticky desktop list; "inline" = collapsible box (mobile and narrow desktop). */
+  variant: 'sidebar' | 'inline';
+}
+
+const { headings, variant } = Astro.props;
+const items = headings.filter((heading) => heading.depth === 2);
+const listId = `toc-list-${variant}`;
+---
+
+{
+  items.length >= 2 &&
+    (variant === 'sidebar' ? (
+      <nav class="toc-sidebar" aria-labelledby="toc-sidebar-label" data-toc data-pagefind-ignore>
+        <p id="toc-sidebar-label" class="section-label">
+          On this page
+        </p>
+        <ol class="toc-sidebar__list">
+          {items.map((heading) => (
+            <li>
+              <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+                <span class="toc-dot" aria-hidden="true" />
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    ) : (
+      <nav class="toc-inline" aria-label="On this page" data-toc data-toc-inline data-pagefind-ignore>
+        <button type="button" class="toc-inline__toggle" aria-expanded="false" aria-controls={listId} data-toc-toggle>
+          <span>On this page</span>
+          <Icon name="chevron" class="toc-inline__chevron" />
+        </button>
+        <ol id={listId} class="toc-inline__list" hidden>
+          {items.map((heading) => (
+            <li>
+              <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+                <span class="toc-dot" aria-hidden="true" />
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    ))
+}
+
+<style>
+  .toc-sidebar {
+    position: sticky;
+    top: 24px;
+    max-width: 200px;
+  }
+
+  .toc-sidebar .section-label {
+    margin-bottom: 8px;
+  }
+
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-sidebar__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 4px 0 4px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--text);
+  }
+
+  .toc-dot {
+    display: none;
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  a[aria-current='true'] {
+    padding-left: 0;
+    color: var(--accent);
+  }
+
+  a[aria-current='true'] .toc-dot {
+    display: block;
+  }
+
+  .toc-inline {
+    margin-top: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .toc-inline__toggle {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border: 0;
+    border-radius: var(--radius-card);
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .toc-inline__toggle :global(.toc-inline__chevron) {
+    color: var(--muted);
+  }
+
+  .toc-inline__toggle[aria-expanded='true'] :global(.toc-inline__chevron) {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .toc-inline__toggle :global(.toc-inline__chevron) {
+      transition: transform 0.15s ease;
+    }
+  }
+
+  .toc-inline__list {
+    padding: 4px 16px 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .toc-inline__list[hidden] {
+    display: none;
+  }
+
+  .toc-inline a {
+    min-height: 40px;
+  }
+</style>

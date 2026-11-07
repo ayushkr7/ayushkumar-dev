@@ -1,0 +1,330 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Toc from '../../components/Toc.astro';
+import { formatDate, getPosts, isoDate, postUrl, readingTime, tagUrl, type Post } from '../../lib/posts';
+import '../../styles/prose.css';
+
+export const getStaticPaths = (async () => {
+  const posts = await getPosts(); // newest first
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      // Previous = next older post, Next = next newer post.
+      previous: posts[i + 1] as Post | undefined,
+      next: posts[i - 1] as Post | undefined,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  post: Post;
+  previous?: Post;
+  next?: Post;
+}
+
+const { post, previous, next } = Astro.props;
+const { Content, headings } = await render(post);
+const { title, description, pubDate, updatedDate, tags } = post.data;
+const minutes = readingTime(post.body);
+const hasToc = headings.filter((heading) => heading.depth === 2).length >= 2;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  section="writing"
+  search
+  ogType="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+  tags={tags}
+>
+  <div class="article-layout">
+    <article class="article" data-pagefind-body>
+      <a class="back-link" href="/blog/" data-pagefind-ignore>← All posts</a>
+
+      <p class="meta" data-pagefind-ignore>
+        <time datetime={isoDate(pubDate)} data-pagefind-meta="date" data-pagefind-sort={`date:${isoDate(pubDate)}`}>
+          {formatDate(pubDate)}
+        </time>
+        <span aria-hidden="true">·</span>
+        <span>{minutes} min read</span>
+        {
+          updatedDate && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>
+                Updated <time datetime={isoDate(updatedDate)}>{formatDate(updatedDate)}</time>
+              </span>
+            </>
+          )
+        }
+      </p>
+
+      <h1 class="title" data-pagefind-meta="title" data-pagefind-weight="7">{title}</h1>
+      <p class="lead" data-pagefind-meta="description">{description}</p>
+
+      {
+        tags.length > 0 && (
+          <ul class="tag-list tags" role="list" aria-label="Tags">
+            {tags.map((tag) => (
+              <li>
+                <a class="tag-chip" href={tagUrl(tag)} data-pagefind-filter={`tag:${tag}`}>
+                  #{tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <div class="toc-inline-wrap">
+        <Toc headings={headings} variant="inline" />
+      </div>
+
+      <div class="prose body">
+        <Content />
+      </div>
+
+      {
+        (previous || next) && (
+          <nav class="pager" aria-label="More posts" data-pagefind-ignore>
+            {previous && (
+              <a class="pager__card pager__card--prev" href={postUrl(previous)} rel="prev">
+                <span class="pager__label">← Previous</span>
+                <span class="pager__title">{previous.data.title}</span>
+              </a>
+            )}
+            {next && (
+              <a class="pager__card pager__card--next" href={postUrl(next)} rel="next">
+                <span class="pager__label">Next →</span>
+                <span class="pager__title">{next.data.title}</span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </article>
+
+    {
+      hasToc && (
+        <aside class="toc-col" aria-label="Table of contents">
+          <Toc headings={headings} variant="sidebar" />
+        </aside>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .article-layout {
+    padding: 20px var(--pad-x) 80px;
+  }
+
+  .article {
+    min-width: 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin: 16px 0 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .title {
+    margin: 14px 0 0;
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--text);
+  }
+
+  .lead {
+    margin: 16px 0 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .tags {
+    margin-top: 20px;
+  }
+
+  .body {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 56px;
+  }
+
+  .pager__card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+  }
+
+  .pager__card:hover {
+    border-color: var(--border-strong);
+  }
+
+  .pager__label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .pager__title {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .toc-col {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .article-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 696px) minmax(0, 1fr);
+      padding-top: 48px;
+    }
+
+    .article {
+      grid-column: 2;
+    }
+
+    .title {
+      font-size: 42px;
+    }
+
+    .lead {
+      font-size: 19px;
+    }
+
+    .pager {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pager__card--next {
+      grid-column: 2;
+      text-align: right;
+    }
+  }
+
+  /* The right column only fits the 200px list (+56px padding) on wide screens;
+     between 768px and 1200px the collapsible box is used instead. */
+  @media (min-width: 1200px) {
+    .toc-col {
+      display: block;
+      grid-column: 3;
+      padding-left: 56px;
+    }
+
+    .toc-inline-wrap {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  /* ---------- Copy buttons on code blocks ---------- */
+
+  async function copyText(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Fallback for non-secure contexts.
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.className = 'visually-hidden';
+      document.body.append(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+    const label = button.querySelector('.code-copy-label');
+    let timer: number | undefined;
+    button.addEventListener('click', async () => {
+      const code = button.closest('.code-block')?.querySelector('pre code');
+      if (!code || !label) return;
+      await copyText(code.textContent ?? '');
+      label.textContent = 'Copied';
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => (label.textContent = 'Copy'), 1500);
+    });
+  });
+
+  /* ---------- Mermaid diagrams (only fetched on posts that have one) ---------- */
+
+  if (document.querySelector('[data-mermaid]')) {
+    import('../../lib/mermaid-client').then(({ initMermaid }) => initMermaid());
+  }
+
+  /* ---------- Table of contents ---------- */
+
+  // Mobile / narrow: collapsible box.
+  document.querySelectorAll<HTMLButtonElement>('[data-toc-toggle]').forEach((toggle) => {
+    const list = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      if (list) list.hidden = !open;
+    });
+  });
+
+  // Highlight the section in view.
+  const headings = [...document.querySelectorAll<HTMLElement>('.prose h2[id]')];
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+
+  if (headings.length && links.length) {
+    const OFFSET = 120;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      let current = headings[0].id;
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top - OFFSET <= 0) current = heading.id;
+        else break;
+      }
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) current = headings[headings.length - 1].id;
+      links.forEach((link) => {
+        if (link.dataset.tocLink === current) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+    update();
+  }
+</script>

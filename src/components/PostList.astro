@@ -1,0 +1,107 @@
+---
+import { formatDate, isoDate, postUrl, readingTime, type Post } from '../lib/posts';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="post-list">
+  {
+    posts.map((post) => (
+      <article class="post">
+        <time class="post__date" datetime={isoDate(post.data.pubDate)}>
+          {formatDate(post.data.pubDate)}
+        </time>
+        <div class="post__body">
+          <h3 class="post__title">
+            <a href={postUrl(post)}>{post.data.title}</a>
+          </h3>
+          <p class="post__excerpt">{post.data.description}</p>
+          <div class="post__meta">
+            {post.data.tags.map((tag) => (
+              <span class="tag-chip">#{tag}</span>
+            ))}
+            <span class="post__read">· {readingTime(post.body)} min</span>
+          </div>
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .post {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post__date {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .post__body {
+    min-width: 0;
+  }
+
+  .post__title {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .post__title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .post__title a:hover {
+    color: var(--accent);
+  }
+
+  .post__excerpt {
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .post__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .post__read {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (min-width: 768px) {
+    .post {
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 24px;
+      padding: 28px 0;
+    }
+
+    .post__date {
+      padding-top: 4px;
+    }
+
+    .post__title {
+      font-size: 21px;
+    }
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="site-footer">
+  <div class="container inner">
+    <span>© {site.year} {site.author} · Built with Astro</span>
+    <div class="links">
+      <a href="/rss.xml">RSS</a>
+      {
+        site.github && (
+          <a href={site.github} rel="me noopener" target="_blank">
+            GitHub
+          </a>
+        )
+      }
+      <a href={`mailto:${site.email}`}>Email</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px 24px;
+    padding-block: 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .links a {
+    display: inline-block;
+    padding: 12px 0;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--text);
+  }
+
+  @media (min-width: 768px) {
+    .inner {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+</style>

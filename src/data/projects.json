@@ -1,0 +1,73 @@
+[
+  {
+    "id": "astro-minimal-blog",
+    "name": "astro-minimal-blog",
+    "description": "This site as a starter theme: design tokens, dark mode without a flash, and Pagefind search.",
+    "status": "active",
+    "stack": ["Astro", "CSS", "Pagefind"],
+    "year": 2026,
+    "updated": "2026-10-20",
+    "demo": "https://astro-minimal-blog.elliotalderson.dev",
+    "source": "https://github.com/elliotalderson-dev/astro-minimal-blog",
+    "post": "a-minimal-dark-mode-without-a-flash"
+  },
+  {
+    "id": "remark-read-time",
+    "name": "remark-read-time",
+    "description": "Remark plugin that adds a read-time field to every entry in an Astro content collection.",
+    "status": "active",
+    "stack": ["TypeScript", "remark"],
+    "year": 2026,
+    "updated": "2026-09-02",
+    "source": "https://github.com/elliotalderson-dev/remark-read-time",
+    "npm": "https://www.npmjs.com/package/remark-read-time"
+  },
+  {
+    "id": "linkcheck-action",
+    "name": "linkcheck-action",
+    "description": "GitHub Action that crawls a built static site and fails the build on broken links.",
+    "status": "maintained",
+    "stack": ["Node.js", "GitHub Actions"],
+    "year": 2025,
+    "updated": "2026-08-14",
+    "source": "https://github.com/elliotalderson-dev/linkcheck-action",
+    "post": "what-i-check-before-every-deploy"
+  },
+  {
+    "id": "og-cards",
+    "name": "og-cards",
+    "description": "Generates Open Graph images for posts at build time from the title and tags.",
+    "status": "maintained",
+    "stack": ["Astro", "Satori"],
+    "year": 2025,
+    "updated": "2026-03-10",
+    "source": "https://github.com/elliotalderson-dev/og-cards"
+  },
+  {
+    "id": "jekyll-to-astro",
+    "name": "jekyll-to-astro",
+    "description": "Scripts used to migrate this blog from Jekyll.",
+    "status": "archived",
+    "stack": ["Node.js"],
+    "year": 2025,
+    "source": "https://github.com/elliotalderson-dev/jekyll-to-astro"
+  },
+  {
+    "id": "tokens-to-css",
+    "name": "tokens-to-css",
+    "description": "Turns a JSON token file into CSS custom properties.",
+    "status": "archived",
+    "stack": ["TypeScript"],
+    "year": 2024,
+    "source": "https://github.com/elliotalderson-dev/tokens-to-css"
+  },
+  {
+    "id": "tiny-status",
+    "name": "tiny-status",
+    "description": "A one-page status board for side projects.",
+    "status": "archived",
+    "stack": ["HTML", "CSS"],
+    "year": 2023,
+    "source": "https://github.com/elliotalderson-dev/tiny-status"
+  }
+]

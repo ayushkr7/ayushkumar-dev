@@ -1,0 +1,436 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { formatShortDate, getPosts, getTags, isoDate, postUrl, readingTime, type Post } from '../../lib/posts';
+
+const posts = await getPosts();
+const tags = getTags(posts);
+
+// Group by publication year, newest first (posts are already sorted).
+const groups: { year: number; posts: Post[] }[] = [];
+for (const post of posts) {
+  const year = post.data.pubDate.getUTCFullYear();
+  const group = groups.at(-1);
+  if (group?.year === year) group.posts.push(post);
+  else groups.push({ year, posts: [post] });
+}
+
+const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
+---
+
+<BaseLayout
+  title="All posts"
+  description="Every post on the blog, newest first and grouped by year. Search by title or filter by tag."
+  section="writing"
+>
+  <div class="container archive">
+    <a class="back-link" href="/">← Home</a>
+    <h1 class="page-title archive__title">All posts</h1>
+    <p class="page-lead">
+      Everything I’ve written, newest first. Prefer a feed? <a href="/rss.xml">Subscribe via RSS</a>.
+    </p>
+
+    <div class="controls">
+      <label class="field">
+        <Icon name="search" />
+        <span class="visually-hidden">Search posts</span>
+        <input
+          type="search"
+          placeholder="Search by title or tag…"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-keyshortcuts="/"
+          data-archive-search
+        />
+        <kbd class="field__hint" aria-hidden="true">/</kbd>
+      </label>
+
+      <div class="filters" role="group" aria-label="Filter by tag">
+        <button type="button" class="filter" aria-pressed="true" data-archive-tag="all">All</button>
+        {
+          tags.map((tag) => (
+            <button type="button" class="filter" aria-pressed="false" data-archive-tag={tag}>
+              #{tag}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="count" aria-live="polite" data-archive-count data-total={posts.length}>{plural(posts.length)}</p>
+
+    {
+      groups.map((group) => (
+        <section class="year" aria-labelledby={`year-${group.year}`} data-archive-year>
+          <div class="year__head">
+            <h2 id={`year-${group.year}`} class="year__title">
+              {group.year}
+            </h2>
+            <span class="year__count" data-archive-year-count>
+              {plural(group.posts.length)}
+            </span>
+          </div>
+          <ol class="rows">
+            {group.posts.map((post) => (
+              <li
+                class="row"
+                data-archive-row
+                data-title={post.data.title.toLowerCase()}
+                data-tags={post.data.tags.join(' ')}
+              >
+                <a class="row__title" href={postUrl(post)}>
+                  {post.data.title}
+                </a>
+                <span class="row__date">
+                  <time datetime={isoDate(post.data.pubDate)}>{formatShortDate(post.data.pubDate)}</time>
+                  <span class="row__read"> · {readingTime(post.body)} min</span>
+                </span>
+                <span class="row__tags">{post.data.tags.map((tag) => `#${tag}`).join(' ')}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+
+    <div class="empty" data-archive-empty hidden>
+      <p class="empty__text">No posts match your filters.</p>
+      <button type="button" class="empty__clear" data-archive-clear>Clear filters</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .archive {
+    padding-top: 20px;
+    padding-bottom: 96px;
+  }
+
+  .archive__title {
+    margin-top: 12px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 36px;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--field);
+    color: var(--muted);
+    cursor: text;
+  }
+
+  .field:focus-within {
+    border-color: var(--border-strong);
+  }
+
+  .field:has(input:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .field input {
+    flex-grow: 1;
+    min-width: 0;
+    height: 44px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field input::placeholder {
+    color: var(--muted);
+  }
+
+  .field__hint {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-chip);
+    padding: 1px 6px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .filter:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .filter[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .count {
+    margin: 28px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .year {
+    margin-top: 28px;
+  }
+
+  .year__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .year__title {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .year__count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .row[hidden] {
+    display: none;
+  }
+
+  .row__title {
+    min-width: 0;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .row__title:hover {
+    color: var(--accent);
+  }
+
+  .row__date {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .row__tags {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .empty {
+    margin-top: 28px;
+    padding: 40px 24px;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-card);
+    text-align: center;
+  }
+
+  .empty[hidden] {
+    display: none;
+  }
+
+  .empty__text {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .empty__clear {
+    min-height: 44px;
+    margin-top: 6px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .empty__clear:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 768px) {
+    .archive {
+      padding-top: 48px;
+    }
+
+    .field__hint {
+      display: inline-block;
+    }
+
+    .row {
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    /* Desktop order: date | title | tags */
+    .row__date {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .row__title {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .row__tags {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .row__read {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-archive-search]')!;
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-archive-tag]')];
+  const rows = [...document.querySelectorAll<HTMLElement>('[data-archive-row]')];
+  const years = [...document.querySelectorAll<HTMLElement>('[data-archive-year]')];
+  const countEl = document.querySelector<HTMLElement>('[data-archive-count]')!;
+  const empty = document.querySelector<HTMLElement>('[data-archive-empty]')!;
+  const clear = document.querySelector<HTMLButtonElement>('[data-archive-clear]')!;
+  const total = Number(countEl.dataset.total);
+  const knownTags = new Set(buttons.map((button) => button.dataset.archiveTag));
+
+  const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
+
+  let activeTag = 'all';
+
+  function tagFromUrl(): string {
+    const tag = new URLSearchParams(window.location.search).get('tag')?.toLowerCase() ?? 'all';
+    return knownTags.has(tag) ? tag : 'all';
+  }
+
+  function apply() {
+    const query = input.value.trim().toLowerCase();
+    let shown = 0;
+
+    for (const row of rows) {
+      const tags = (row.dataset.tags ?? '').split(' ').filter(Boolean);
+      const matchesTag = activeTag === 'all' || tags.includes(activeTag);
+      const matchesQuery =
+        !query || (row.dataset.title ?? '').includes(query) || tags.some((tag) => `#${tag}`.includes(query));
+      row.hidden = !(matchesTag && matchesQuery);
+      if (!row.hidden) shown++;
+    }
+
+    for (const year of years) {
+      const visible = year.querySelectorAll('[data-archive-row]:not([hidden])').length;
+      year.hidden = visible === 0;
+      const yearCount = year.querySelector('[data-archive-year-count]');
+      if (yearCount) yearCount.textContent = plural(visible);
+    }
+
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.archiveTag === activeTag)));
+
+    const filtered = activeTag !== 'all' || query.length > 0;
+    countEl.textContent = filtered ? `Showing ${shown} of ${total} posts` : plural(total);
+    empty.hidden = shown > 0;
+  }
+
+  function setTag(tag: string, push: boolean) {
+    activeTag = tag;
+    if (push) {
+      const url = new URL(window.location.href);
+      if (tag === 'all') url.searchParams.delete('tag');
+      else url.searchParams.set('tag', tag);
+      history.pushState(null, '', url);
+    }
+    apply();
+  }
+
+  buttons.forEach((button) =>
+    button.addEventListener('click', () => {
+      const tag = button.dataset.archiveTag ?? 'all';
+      if (tag !== activeTag) setTag(tag, true);
+    }),
+  );
+
+  input.addEventListener('input', apply);
+
+  clear.addEventListener('click', () => {
+    input.value = '';
+    setTag('all', activeTag !== 'all');
+    input.focus();
+  });
+
+  // Back / Forward restore the tag from the URL.
+  window.addEventListener('popstate', () => setTag(tagFromUrl(), false));
+
+  // "/" focuses the search box unless the reader is already typing somewhere.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
+    const target = event.target as HTMLElement;
+    if (target.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return;
+    event.preventDefault();
+    input.focus();
+  });
+
+  setTag(tagFromUrl(), false);
+</script>
