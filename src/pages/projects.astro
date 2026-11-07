@@ -76,7 +76,7 @@ const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Arc
               </div>
               <p class="card__desc">{project.data.description}</p>
               {project.data.stack.length > 0 && (
-                <ul class="stack" aria-label="Built with">
+                <ul class="chips" aria-label="Built with">
                   {project.data.stack.map((tech) => (
                     <li>{tech}</li>
                   ))}
@@ -224,24 +224,6 @@ const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Arc
     margin: 0;
     font-size: 15px;
     line-height: 1.6;
-    color: var(--muted);
-  }
-
-  .stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .stack li {
-    padding: 2px 8px;
-    border-radius: var(--radius-chip);
-    background: var(--surface);
-    font-family: var(--font-mono);
-    font-size: 12px;
     color: var(--muted);
   }
 

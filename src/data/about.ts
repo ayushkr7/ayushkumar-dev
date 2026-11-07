@@ -35,7 +35,9 @@ export interface About {
   bio: string[];
   now: { updated: Date; items: string[] };
   experience: Job[];
-  uses: { label: string; value: string }[];
+  /** Shown as chips under “Stack & languages” on the About page. */
+  stack: string[];
+  languages: string[];
   email: string;
   social: { github?: string; linkedin?: string; x?: string; mastodon?: string };
   /** Path to a file in public/, e.g. "/resume.pdf". Leave undefined to hide the download link. */
@@ -81,19 +83,10 @@ export const about: About = {
       company: 'Honeywell',
       summary:
         'Built a remote network-device monitoring tool on SNMPv3, with a Dash dashboard inside a Django app showing live telemetry.',
-    }
+    },
   ],
-  uses: [
-    { label: 'Editor', value: '[Your editor]' },
-    { label: 'Terminal', value: '[Your terminal]' },
-    { label: 'Machine', value: '[Your machine]' },
-    { label: 'Languages', value: 'JavaScript, TypeScript, Python, C++' },
-    { label: 'Stack', value: 'React, Redux, Next.js, Node.js, Express, MongoDB, Jest' },
-    { label: 'Framework', value: 'Astro' },
-    { label: 'Search', value: 'Pagefind' },
-    { label: 'Type', value: 'IBM Plex Sans & Mono' },
-    { label: 'Hosting', value: '[Your host]' },
-  ],
+  stack: ['React', 'Redux', 'Next.js', 'Node.js', 'Express', 'MongoDB', 'Jest'],
+  languages: ['JavaScript', 'TypeScript', 'Python', 'C++'],
   email: 'krayush.ak@gmail.com',
   social: {
     github: 'https://github.com/ayushkr7',

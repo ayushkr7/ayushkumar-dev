@@ -23,7 +23,7 @@ Requires Node 20.3+ (Node 22 recommended). `@astrojs/language-server` is pinned 
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
 | `src/content/blog/`            | Posts (`.md` / `.mdx`). Frontmatter: `title`, `description`, `pubDate`, `updatedDate?`, `tags`, `draft`      |
 | `src/content.config.ts`        | `blog` and `projects` collection schemas                                                                     |
-| `src/data/about.ts`            | **All personal data**: name, role, bio, now, experience, uses, email, socials, résumé, portrait              |
+| `src/data/about.ts`            | **All personal data**: name, role, bio, now, experience, stack, languages, email, socials, résumé, portrait  |
 | `src/data/projects.json`       | Projects (`status`: `active` / `maintained` / `archived`; `post` references a blog slug)                     |
 | `src/data/site.ts`             | Site name, title and description                                                                             |
 | `src/styles/tokens.css`        | Design tokens (all colours, both themes)                                                                     |
@@ -63,6 +63,5 @@ LinkedIn profile export: name, role, bio, location, portrait, experience, projec
 `public/resume.pdf` is generated from the same data. Anything neither source had is a placeholder in
 `[square brackets]`, so every page still looks finished. Replace these before you deploy:
 
-- In `src/data/about.ts`: the summaries of the two Victoria’s Secret & Co. roles in `experience`, and the Editor,
-  Terminal, Machine and Hosting rows in `uses`
+- In `src/data/about.ts`: the summaries of the two Victoria’s Secret & Co. roles in `experience`
 - The posts in `src/content/blog/` are still sample content

@@ -11,6 +11,11 @@ const socials = [
   { label: 'X', href: about.social.x },
   { label: 'Mastodon', href: about.social.mastodon },
 ].filter((link): link is { label: string; href: string } => Boolean(link.href));
+
+const skills = [
+  { label: 'Stack', items: about.stack },
+  { label: 'Languages', items: about.languages },
+];
 ---
 
 <BaseLayout
@@ -98,16 +103,22 @@ const socials = [
       }
     </section>
 
-    <section class="block" aria-labelledby="uses">
+    <section class="block" aria-labelledby="skills">
       <div class="section-head">
-        <h2 id="uses" class="section-label">Uses &amp; colophon</h2>
+        <h2 id="skills" class="section-label">Stack &amp; languages</h2>
       </div>
-      <dl class="uses">
+      <dl class="skills">
         {
-          about.uses.map((item) => (
-            <div class="uses__row">
-              <dt>{item.label}</dt>
-              <dd>{item.value}</dd>
+          skills.map((group) => (
+            <div class="skills__row">
+              <dt>{group.label}</dt>
+              <dd>
+                <ul class="chips" role="list">
+                  {group.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </dd>
             </div>
           ))
         }
@@ -285,31 +296,27 @@ const socials = [
     text-decoration: underline;
   }
 
-  .uses {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
+  .skills {
     margin: 0;
   }
 
-  .uses__row {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 0;
+  /* Same grid as the Experience rows above, so the labels line up with the dates. */
+  .skills__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 18px 0;
     border-bottom: 1px solid var(--border);
   }
 
-  .uses dt {
+  .skills dt {
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--muted);
   }
 
-  .uses dd {
+  .skills dd {
     margin: 0;
-    font-size: 14px;
-    color: var(--text);
-    text-align: right;
   }
 
   .contact {
@@ -428,9 +435,10 @@ const socials = [
       gap: 24px;
     }
 
-    .uses {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 32px;
+    .skills__row {
+      grid-template-columns: 128px minmax(0, 1fr);
+      align-items: baseline;
+      gap: 24px;
     }
 
     .contact {

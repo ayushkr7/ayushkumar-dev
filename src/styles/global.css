@@ -225,6 +225,25 @@ a.tag-chip:hover {
   border-color: var(--border-strong);
 }
 
+/* Technology chips: "Built with" on project cards and "Stack & languages" on About. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  padding: 2px 8px;
+  border-radius: var(--radius-chip);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
 /* 44×44 icon buttons in the header */
 .icon-btn {
   width: 44px;
