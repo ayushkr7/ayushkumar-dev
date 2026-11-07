@@ -20,6 +20,11 @@ html {
   html {
     scroll-behavior: smooth;
   }
+
+  /* ClientRouter restores the scroll position on Back and Forward; that shouldn't animate. */
+  html[data-astro-transition] {
+    scroll-behavior: auto;
+  }
 }
 
 /* Locks page scroll while the search dialog is open. */
@@ -93,6 +98,13 @@ input[type='search']::-webkit-search-cancel-button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Page changes from ClientRouter; the universal selector above doesn't reach these. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 

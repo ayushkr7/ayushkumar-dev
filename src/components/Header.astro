@@ -12,7 +12,6 @@ interface Props {
 }
 
 const { current, showSearch = false } = Astro.props;
-console.log(Astro.props);
 
 const nav: { key: Section; label: string; href: string }[] = [
   { key: 'writing', label: 'Writing', href: '/blog/' },
@@ -220,10 +219,13 @@ const nav: { key: Section; label: string; href: string }[] = [
 </style>
 
 <script>
-  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
-  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  import { onPageLoad } from '../lib/page-load';
 
-  if (button && menu) {
+  onPageLoad((signal) => {
+    const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+    const menu = document.querySelector<HTMLElement>('[data-menu]');
+    if (!button || !menu) return;
+
     const isOpen = () => button.getAttribute('aria-expanded') === 'true';
 
     const setOpen = (open: boolean) => {
@@ -237,24 +239,36 @@ const nav: { key: Section; label: string; href: string }[] = [
       if ((event.target as Element).closest('a')) setOpen(false);
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && isOpen()) {
-        setOpen(false);
-        button.focus();
-      }
-    });
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape' && isOpen()) {
+          setOpen(false);
+          button.focus();
+        }
+      },
+      { signal },
+    );
 
     // Opening the search pop-up closes the menu.
-    document.addEventListener('search:open', () => setOpen(false));
+    document.addEventListener('search:open', () => setOpen(false), { signal });
 
     // Growing to desktop width closes it.
-    matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
-      if (event.matches) setOpen(false);
-    });
+    matchMedia('(min-width: 768px)').addEventListener(
+      'change',
+      (event) => {
+        if (event.matches) setOpen(false);
+      },
+      { signal },
+    );
 
     // Restored from the back/forward cache: start closed again.
-    window.addEventListener('pageshow', (event) => {
-      if (event.persisted) setOpen(false);
-    });
-  }
+    window.addEventListener(
+      'pageshow',
+      (event) => {
+        if (event.persisted) setOpen(false);
+      },
+      { signal },
+    );
+  });
 </script>

@@ -248,6 +248,8 @@ const hasToc = headings.filter((heading) => heading.depth === 2).length >= 2;
 </style>
 
 <script>
+  import { onPageLoad } from '../../lib/page-load';
+
   /* ---------- Copy buttons on code blocks ---------- */
 
   async function copyText(text: string) {
@@ -266,65 +268,67 @@ const hasToc = headings.filter((heading) => heading.depth === 2).length >= 2;
     }
   }
 
-  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
-    const label = button.querySelector('.code-copy-label');
-    let timer: number | undefined;
-    button.addEventListener('click', async () => {
-      const code = button.closest('.code-block')?.querySelector('pre code');
-      if (!code || !label) return;
-      await copyText(code.textContent ?? '');
-      label.textContent = 'Copied';
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => (label.textContent = 'Copy'), 1500);
-    });
-  });
-
-  /* ---------- Mermaid diagrams (only fetched on posts that have one) ---------- */
-
-  if (document.querySelector('[data-mermaid]')) {
-    import('../../lib/mermaid-client').then(({ initMermaid }) => initMermaid());
-  }
-
-  /* ---------- Table of contents ---------- */
-
-  // Mobile / narrow: collapsible box.
-  document.querySelectorAll<HTMLButtonElement>('[data-toc-toggle]').forEach((toggle) => {
-    const list = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
-    toggle.addEventListener('click', () => {
-      const open = toggle.getAttribute('aria-expanded') !== 'true';
-      toggle.setAttribute('aria-expanded', String(open));
-      if (list) list.hidden = !open;
-    });
-  });
-
-  // Highlight the section in view.
-  const headings = [...document.querySelectorAll<HTMLElement>('.prose h2[id]')];
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
-
-  if (headings.length && links.length) {
-    const OFFSET = 120;
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      let current = headings[0].id;
-      for (const heading of headings) {
-        if (heading.getBoundingClientRect().top - OFFSET <= 0) current = heading.id;
-        else break;
-      }
-      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-      if (atBottom) current = headings[headings.length - 1].id;
-      links.forEach((link) => {
-        if (link.dataset.tocLink === current) link.setAttribute('aria-current', 'true');
-        else link.removeAttribute('aria-current');
+  onPageLoad((signal) => {
+    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+      const label = button.querySelector('.code-copy-label');
+      let timer: number | undefined;
+      button.addEventListener('click', async () => {
+        const code = button.closest('.code-block')?.querySelector('pre code');
+        if (!code || !label) return;
+        await copyText(code.textContent ?? '');
+        label.textContent = 'Copied';
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => (label.textContent = 'Copy'), 1500);
       });
-    };
+    });
 
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
-    update();
-  }
+    /* ---------- Mermaid diagrams (only fetched on posts that have one) ---------- */
+
+    if (document.querySelector('[data-mermaid]')) {
+      import('../../lib/mermaid-client').then(({ initMermaid }) => initMermaid(document, signal));
+    }
+
+    /* ---------- Table of contents ---------- */
+
+    // Mobile / narrow: collapsible box.
+    document.querySelectorAll<HTMLButtonElement>('[data-toc-toggle]').forEach((toggle) => {
+      const list = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        if (list) list.hidden = !open;
+      });
+    });
+
+    // Highlight the section in view.
+    const headings = [...document.querySelectorAll<HTMLElement>('.prose h2[id]')];
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+
+    if (headings.length && links.length) {
+      const OFFSET = 120;
+      let frame = 0;
+
+      const update = () => {
+        frame = 0;
+        let current = headings[0].id;
+        for (const heading of headings) {
+          if (heading.getBoundingClientRect().top - OFFSET <= 0) current = heading.id;
+          else break;
+        }
+        const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+        if (atBottom) current = headings[headings.length - 1].id;
+        links.forEach((link) => {
+          if (link.dataset.tocLink === current) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+      };
+
+      const schedule = () => {
+        if (!frame) frame = requestAnimationFrame(update);
+      };
+      window.addEventListener('scroll', schedule, { passive: true, signal });
+      window.addEventListener('resize', schedule, { passive: true, signal });
+      update();
+    }
+  });
 </script>

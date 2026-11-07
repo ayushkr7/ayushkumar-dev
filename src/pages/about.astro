@@ -437,19 +437,23 @@ const socials = [
 </style>
 
 <script>
-  document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
-    const label = button.querySelector('[data-copy-email-label]');
-    let timer: number | undefined;
-    button.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(button.dataset.copyEmail ?? '');
-      } catch {
-        return;
-      }
-      if (!label) return;
-      label.textContent = 'Copied';
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => (label.textContent = 'Copy email'), 1500);
+  import { onPageLoad } from '../lib/page-load';
+
+  onPageLoad(() => {
+    document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
+      const label = button.querySelector('[data-copy-email-label]');
+      let timer: number | undefined;
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(button.dataset.copyEmail ?? '');
+        } catch {
+          return;
+        }
+        if (!label) return;
+        label.textContent = 'Copied';
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => (label.textContent = 'Copy email'), 1500);
+      });
     });
   });
 </script>

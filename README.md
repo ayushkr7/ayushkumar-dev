@@ -19,16 +19,17 @@ Requires Node 20.3+ (Node 22 recommended). `@astrojs/language-server` is pinned 
 
 ## Where things live
 
-| Path                           | Purpose                                                                                                 |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `src/content/blog/`            | Posts (`.md` / `.mdx`). Frontmatter: `title`, `description`, `pubDate`, `updatedDate?`, `tags`, `draft` |
-| `src/content.config.ts`        | `blog` and `projects` collection schemas                                                                |
-| `src/data/about.ts`            | **All personal data**: name, role, bio, now, experience, uses, email, socials, résumé, portrait         |
-| `src/data/projects.json`       | Projects (`status`: `active` / `maintained` / `archived`; `post` references a blog slug)                |
-| `src/data/site.ts`             | Site name, title and description                                                                        |
-| `src/styles/tokens.css`        | Design tokens (all colours, both themes)                                                                |
-| `src/lib/shiki.ts`             | Syntax theme colours + code-block figure (file name + Copy button)                                      |
-| `src/layouts/BaseLayout.astro` | `<head>`, no-flash theme script, header, footer, skip link, search                                      |
+| Path                           | Purpose                                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `src/content/blog/`            | Posts (`.md` / `.mdx`). Frontmatter: `title`, `description`, `pubDate`, `updatedDate?`, `tags`, `draft`      |
+| `src/content.config.ts`        | `blog` and `projects` collection schemas                                                                     |
+| `src/data/about.ts`            | **All personal data**: name, role, bio, now, experience, uses, email, socials, résumé, portrait              |
+| `src/data/projects.json`       | Projects (`status`: `active` / `maintained` / `archived`; `post` references a blog slug)                     |
+| `src/data/site.ts`             | Site name, title and description                                                                             |
+| `src/styles/tokens.css`        | Design tokens (all colours, both themes)                                                                     |
+| `src/lib/shiki.ts`             | Syntax theme colours + code-block figure (file name + Copy button)                                           |
+| `src/lib/page-load.ts`         | `onPageLoad()`: use it for any `<script>` that touches the page, because ClientRouter only runs scripts once |
+| `src/layouts/BaseLayout.astro` | `<head>`, no-flash theme script, header, footer, skip link, search                                           |
 
 ## Writing posts
 

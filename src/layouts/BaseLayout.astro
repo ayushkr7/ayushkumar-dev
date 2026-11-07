@@ -2,6 +2,7 @@
 import '../styles/global.css';
 
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import Header, { type Section } from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SearchDialog from '../components/SearchDialog.astro';
@@ -56,6 +57,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         document.documentElement.dataset.theme = theme;
         // Lets CSS hide no-JS fallbacks (e.g. Mermaid source) before first paint.
         document.documentElement.classList.add('js');
+
+        // ClientRouter replaces <html>'s attributes on navigation, so carry these over before it paints.
+        document.addEventListener('astro:before-swap', function (event) {
+          var next = event.newDocument.documentElement;
+          next.dataset.theme = document.documentElement.dataset.theme;
+          next.classList.add('js');
+        });
       })();
     </script>
 
@@ -71,6 +79,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 
     <Font cssVariable="--font-sans" preload />
     <Font cssVariable="--font-mono" preload />
+    <ClientRouter />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />

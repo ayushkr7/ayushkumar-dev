@@ -351,89 +351,103 @@ const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
 </style>
 
 <script>
-  const input = document.querySelector<HTMLInputElement>('[data-archive-search]')!;
-  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-archive-tag]')];
-  const rows = [...document.querySelectorAll<HTMLElement>('[data-archive-row]')];
-  const years = [...document.querySelectorAll<HTMLElement>('[data-archive-year]')];
-  const countEl = document.querySelector<HTMLElement>('[data-archive-count]')!;
-  const empty = document.querySelector<HTMLElement>('[data-archive-empty]')!;
-  const clear = document.querySelector<HTMLButtonElement>('[data-archive-clear]')!;
-  const total = Number(countEl.dataset.total);
-  const knownTags = new Set(buttons.map((button) => button.dataset.archiveTag));
+  import { onPageLoad } from '../../lib/page-load';
 
   const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
 
-  let activeTag = 'all';
-
-  function tagFromUrl(): string {
-    const tag = new URLSearchParams(window.location.search).get('tag')?.toLowerCase() ?? 'all';
-    return knownTags.has(tag) ? tag : 'all';
-  }
-
-  function apply() {
-    const query = input.value.trim().toLowerCase();
-    let shown = 0;
-
-    for (const row of rows) {
-      const tags = (row.dataset.tags ?? '').split(' ').filter(Boolean);
-      const matchesTag = activeTag === 'all' || tags.includes(activeTag);
-      const matchesQuery =
-        !query || (row.dataset.title ?? '').includes(query) || tags.some((tag) => `#${tag}`.includes(query));
-      row.hidden = !(matchesTag && matchesQuery);
-      if (!row.hidden) shown++;
-    }
-
-    for (const year of years) {
-      const visible = year.querySelectorAll('[data-archive-row]:not([hidden])').length;
-      year.hidden = visible === 0;
-      const yearCount = year.querySelector('[data-archive-year-count]');
-      if (yearCount) yearCount.textContent = plural(visible);
-    }
-
-    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.archiveTag === activeTag)));
-
-    const filtered = activeTag !== 'all' || query.length > 0;
-    countEl.textContent = filtered ? `Showing ${shown} of ${total} posts` : plural(total);
-    empty.hidden = shown > 0;
-  }
-
-  function setTag(tag: string, push: boolean) {
-    activeTag = tag;
-    if (push) {
-      const url = new URL(window.location.href);
-      if (tag === 'all') url.searchParams.delete('tag');
-      else url.searchParams.set('tag', tag);
-      history.pushState(null, '', url);
-    }
-    apply();
-  }
-
-  buttons.forEach((button) =>
-    button.addEventListener('click', () => {
-      const tag = button.dataset.archiveTag ?? 'all';
-      if (tag !== activeTag) setTag(tag, true);
-    }),
-  );
-
-  input.addEventListener('input', apply);
-
-  clear.addEventListener('click', () => {
-    input.value = '';
-    setTag('all', activeTag !== 'all');
-    input.focus();
+  onPageLoad((signal) => {
+    const input = document.querySelector<HTMLInputElement>('[data-archive-search]');
+    // This script stays loaded after leaving the archive, so most pages have nothing to set up.
+    if (input) setUpArchive(input, signal);
   });
 
-  // Back / Forward restore the tag from the URL.
-  window.addEventListener('popstate', () => setTag(tagFromUrl(), false));
+  function setUpArchive(input: HTMLInputElement, signal: AbortSignal) {
+    const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-archive-tag]')];
+    const rows = [...document.querySelectorAll<HTMLElement>('[data-archive-row]')];
+    const years = [...document.querySelectorAll<HTMLElement>('[data-archive-year]')];
+    const countEl = document.querySelector<HTMLElement>('[data-archive-count]')!;
+    const empty = document.querySelector<HTMLElement>('[data-archive-empty]')!;
+    const clear = document.querySelector<HTMLButtonElement>('[data-archive-clear]')!;
+    const total = Number(countEl.dataset.total);
+    const knownTags = new Set(buttons.map((button) => button.dataset.archiveTag));
 
-  // "/" focuses the search box unless the reader is already typing somewhere.
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
-    const target = event.target as HTMLElement;
-    if (target.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return;
-    event.preventDefault();
-    input.focus();
-  });
+    let activeTag = 'all';
 
-  setTag(tagFromUrl(), false);
+    function tagFromUrl(): string {
+      const tag = new URLSearchParams(window.location.search).get('tag')?.toLowerCase() ?? 'all';
+      return knownTags.has(tag) ? tag : 'all';
+    }
+
+    function apply() {
+      const query = input.value.trim().toLowerCase();
+      let shown = 0;
+
+      for (const row of rows) {
+        const tags = (row.dataset.tags ?? '').split(' ').filter(Boolean);
+        const matchesTag = activeTag === 'all' || tags.includes(activeTag);
+        const matchesQuery =
+          !query || (row.dataset.title ?? '').includes(query) || tags.some((tag) => `#${tag}`.includes(query));
+        row.hidden = !(matchesTag && matchesQuery);
+        if (!row.hidden) shown++;
+      }
+
+      for (const year of years) {
+        const visible = year.querySelectorAll('[data-archive-row]:not([hidden])').length;
+        year.hidden = visible === 0;
+        const yearCount = year.querySelector('[data-archive-year-count]');
+        if (yearCount) yearCount.textContent = plural(visible);
+      }
+
+      buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.archiveTag === activeTag)));
+
+      const filtered = activeTag !== 'all' || query.length > 0;
+      countEl.textContent = filtered ? `Showing ${shown} of ${total} posts` : plural(total);
+      empty.hidden = shown > 0;
+    }
+
+    function setTag(tag: string, push: boolean) {
+      activeTag = tag;
+      if (push) {
+        const url = new URL(window.location.href);
+        if (tag === 'all') url.searchParams.delete('tag');
+        else url.searchParams.set('tag', tag);
+        // Keep ClientRouter's state: it ignores Back and Forward to history entries without it.
+        history.pushState(history.state, '', url);
+      }
+      apply();
+    }
+
+    buttons.forEach((button) =>
+      button.addEventListener('click', () => {
+        const tag = button.dataset.archiveTag ?? 'all';
+        if (tag !== activeTag) setTag(tag, true);
+      }),
+    );
+
+    input.addEventListener('input', apply);
+
+    clear.addEventListener('click', () => {
+      input.value = '';
+      setTag('all', activeTag !== 'all');
+      input.focus();
+    });
+
+    // Back / Forward restore the tag from the URL.
+    window.addEventListener('popstate', () => setTag(tagFromUrl(), false), { signal });
+
+    // "/" focuses the search box unless the reader is already typing somewhere.
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
+        const target = event.target as HTMLElement;
+        if (target.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return;
+        event.preventDefault();
+        input.focus();
+      },
+      { signal },
+    );
+
+    setTag(tagFromUrl(), false);
+  }
 </script>

@@ -79,6 +79,9 @@ function config(): MermaidConfig {
 }
 
 async function render(figure: HTMLElement): Promise<void> {
+  // The reader may have navigated away while this was queued.
+  if (!figure.isConnected) return;
+
   const canvas = figure.querySelector<HTMLElement>('[data-mermaid-canvas]');
   const source = figure.querySelector('[data-mermaid-source]')?.textContent ?? '';
   if (!canvas || !source.trim()) return;
@@ -92,6 +95,7 @@ async function render(figure: HTMLElement): Promise<void> {
     if (!(await mermaid.parse(source, { suppressErrors: true }))) throw new Error('Invalid Mermaid syntax');
 
     const { svg, bindFunctions } = await mermaid.render(`mermaid-diagram-${++renderCount}`, source);
+    if (!figure.isConnected) return;
 
     keepScrollPosition(figure, () => {
       canvas.innerHTML = svg;
@@ -187,9 +191,10 @@ function enqueue(figure: HTMLElement) {
   return queue;
 }
 
-export function initMermaid(root: ParentNode = document) {
+/** `signal` ends the observers and listeners when the reader leaves the page. */
+export function initMermaid(root: ParentNode = document, signal?: AbortSignal) {
   const figures = [...root.querySelectorAll<HTMLElement>('[data-mermaid]')];
-  if (!figures.length) return;
+  if (!figures.length || signal?.aborted) return;
 
   const seen = new WeakSet<HTMLElement>();
   const observer = new IntersectionObserver(
@@ -207,19 +212,29 @@ export function initMermaid(root: ParentNode = document) {
   figures.forEach((figure) => observer.observe(figure));
 
   let frame = 0;
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() =>
-      figures
-        .filter((figure) => figure.dataset.state === 'rendered')
-        .forEach((figure) => updateScrollable(figure.querySelector<HTMLElement>('[data-mermaid-canvas]')!)),
-    );
-  });
+  window.addEventListener(
+    'resize',
+    () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() =>
+        figures
+          .filter((figure) => figure.dataset.state === 'rendered')
+          .forEach((figure) => updateScrollable(figure.querySelector<HTMLElement>('[data-mermaid-canvas]')!)),
+      );
+    },
+    { signal },
+  );
 
   // Re-theme diagrams that have already been drawn.
-  new MutationObserver(() => {
+  const themeObserver = new MutationObserver(() => {
     figures
       .filter((figure) => seen.has(figure) && figure.dataset.state === 'rendered')
       .forEach((figure) => void enqueue(figure));
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  signal?.addEventListener('abort', () => {
+    observer.disconnect();
+    themeObserver.disconnect();
+  });
 }

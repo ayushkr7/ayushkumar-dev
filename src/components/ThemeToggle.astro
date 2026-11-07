@@ -23,14 +23,16 @@ import Icon from './Icon.astro';
 </style>
 
 <script>
+  import { onPageLoad } from '../lib/page-load';
+
   type Theme = 'light' | 'dark';
   const root = document.documentElement;
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+  const buttons = () => document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
   const current = (): Theme => (root.dataset.theme === 'dark' ? 'dark' : 'light');
 
   function syncLabels() {
     const label = current() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
-    buttons.forEach((button) => button.setAttribute('aria-label', label));
+    buttons().forEach((button) => button.setAttribute('aria-label', label));
   }
 
   function apply(theme: Theme, persist: boolean) {
@@ -44,10 +46,6 @@ import Icon from './Icon.astro';
     }
     syncLabels();
   }
-
-  buttons.forEach((button) =>
-    button.addEventListener('click', () => apply(current() === 'dark' ? 'light' : 'dark', true)),
-  );
 
   // With no saved choice, keep following the OS setting live.
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
@@ -64,5 +62,10 @@ import Icon from './Icon.astro';
       apply(event.newValue, false);
   });
 
-  syncLabels();
+  onPageLoad(() => {
+    buttons().forEach((button) =>
+      button.addEventListener('click', () => apply(current() === 'dark' ? 'light' : 'dark', true)),
+    );
+    syncLabels();
+  });
 </script>
