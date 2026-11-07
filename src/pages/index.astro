@@ -25,19 +25,19 @@ const topics = getTags(posts);
         {' '}
         RSS feed{' '}
       </a>
-      {about.social.github && (
-        <a class="intro__secondary" href={about.social.github} rel="me noopener" target="_blank">
-          GitHub
-        </a>
-      )}
+      {
+        about.social.github && (
+          <a class="intro__secondary" href={about.social.github} rel="me noopener" target="_blank">
+            GitHub
+          </a>
+        )
+      }
     </div>
   </section>
 
   <section class="container" aria-labelledby="latest">
     <div class="latest-head">
-      <h2 id="latest" class="section-label">
-        Latest posts
-      </h2>
+      <h2 id="latest" class="section-label">Latest posts</h2>
       <a class="latest-head__all" href="/blog/">
         {' '}
         View all →{' '}
@@ -47,17 +47,17 @@ const topics = getTags(posts);
   </section>
 
   <section class="container topics" aria-labelledby="topics">
-    <h2 id="topics" class="section-label">
-      Topics
-    </h2>
+    <h2 id="topics" class="section-label">Topics</h2>
     <ul class="topics__list" role="list">
-      {topics.map((tag) => (
-        <li>
-          <a class="topic" href={tagUrl(tag)}>
-            {tag}
-          </a>
-        </li>
-      ))}
+      {
+        topics.map((tag) => (
+          <li>
+            <a class="topic" href={tagUrl(tag)}>
+              {tag}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </section>
 </BaseLayout>
