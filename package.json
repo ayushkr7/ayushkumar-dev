@@ -16,7 +16,9 @@
     "@astrojs/mdx": "^4.3.14",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@lucide/astro": "1.70.0",
     "astro": "~5.18.2",
+    "lucide": "1.70.0",
     "mermaid": "~11.17.2"
   },
   "devDependencies": {

@@ -1,5 +1,7 @@
 import type { ShikiTransformer, ThemeRegistration } from 'shiki';
 import type { Element, ElementContent } from 'hast';
+// The same Lucide icon (and version) as Icon.astro, as plain data: this file builds HTML outside Astro components.
+import { Copy as copyIconNode } from 'lucide';
 
 /**
  * Syntax colours from the design tokens table. Shiki needs literal colours at build
@@ -138,10 +140,7 @@ export function codeFigure(): ShikiTransformer {
           ariaHidden: 'true',
           focusable: 'false',
         },
-        [
-          el('rect', { x: '9', y: '9', width: '11', height: '11', rx: '2' }),
-          el('path', { d: 'M5 15V6a2 2 0 0 1 2-2h9' }),
-        ],
+        copyIconNode.map(([tag, attributes]) => el(tag, attributes)),
       );
 
       const header = el('div', { className: ['code-header'], dataPagefindIgnore: '' }, [

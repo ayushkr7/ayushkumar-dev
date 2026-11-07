@@ -61,6 +61,18 @@ svg {
   flex-shrink: 0;
 }
 
+/* An icon inside a line of text, e.g. "View all →" (see Icon.astro). */
+.icon-inline {
+  display: inline-block;
+  vertical-align: -0.125em;
+}
+
+/* Flex links drop the space between their text and an inline icon, so put it back. Has no effect on
+   links that aren't flex or grid, where the ordinary space in the markup already separates them. */
+:where(a, button):has(> .icon-inline) {
+  column-gap: 0.4em;
+}
+
 button,
 input {
   font: inherit;
@@ -232,7 +244,7 @@ a.tag-chip:hover {
   background: var(--hover);
 }
 
-/* Muted mono back links: "← Home", "← All posts" */
+/* Muted mono back links: "Home", "All posts", each after a left-arrow icon */
 .back-link {
   display: inline-flex;
   align-items: center;

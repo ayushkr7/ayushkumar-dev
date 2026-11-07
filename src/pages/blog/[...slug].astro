@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Toc from '../../components/Toc.astro';
+import Icon from '../../components/Icon.astro';
 import { formatDate, getPosts, isoDate, postUrl, readingTime, tagUrl, type Post } from '../../lib/posts';
 import '../../styles/prose.css';
 
@@ -44,7 +45,7 @@ const hasToc = headings.filter((heading) => heading.depth === 2).length >= 2;
 >
   <div class="article-layout">
     <article class="article" data-pagefind-body>
-      <a class="back-link" href="/blog/" data-pagefind-ignore>← All posts</a>
+      <a class="back-link" href="/blog/" data-pagefind-ignore><Icon name="arrow-left" inline /> All posts</a>
 
       <p class="meta" data-pagefind-ignore>
         <time datetime={isoDate(pubDate)} data-pagefind-meta="date" data-pagefind-sort={`date:${isoDate(pubDate)}`}>
@@ -94,13 +95,17 @@ const hasToc = headings.filter((heading) => heading.depth === 2).length >= 2;
           <nav class="pager" aria-label="More posts" data-pagefind-ignore>
             {previous && (
               <a class="pager__card pager__card--prev" href={postUrl(previous)} rel="prev">
-                <span class="pager__label">← Previous</span>
+                <span class="pager__label">
+                  <Icon name="arrow-left" inline /> Previous
+                </span>
                 <span class="pager__title">{previous.data.title}</span>
               </a>
             )}
             {next && (
               <a class="pager__card pager__card--next" href={postUrl(next)} rel="next">
-                <span class="pager__label">Next →</span>
+                <span class="pager__label">
+                  Next <Icon name="arrow-right" inline />
+                </span>
                 <span class="pager__title">{next.data.title}</span>
               </a>
             )}

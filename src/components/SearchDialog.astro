@@ -76,13 +76,17 @@ const topics = getTags(posts).slice(0, 6);
         <p class="empty__hint">Try a shorter word, or a topic like #astro or #css.</p>
       </div>
 
-      <a class="browse" href="/blog/" data-search-browse hidden>Browse all posts →</a>
+      <a class="browse" href="/blog/" data-search-browse hidden>Browse all posts <Icon name="arrow-right" inline /></a>
     </div>
 
     <div class="foot">
       <span class="foot__keys">
-        <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
-        <span><kbd>↵</kbd> open</span>
+        <span>
+          <kbd><Icon name="arrow-up" inline /><span class="visually-hidden">Up arrow</span></kbd>
+          <kbd><Icon name="arrow-down" inline /><span class="visually-hidden">Down arrow</span></kbd>
+          navigate
+        </span>
+        <span><kbd><Icon name="enter" inline /><span class="visually-hidden">Enter</span></kbd> open</span>
         <span><kbd>esc</kbd> close</span>
       </span>
       <span>Search by Pagefind</span>
@@ -91,6 +95,9 @@ const topics = getTags(posts).slice(0, 6);
 
   <template data-search-tile>
     <span class="tile" aria-hidden="true"><Icon name="file" size={16} /></span>
+  </template>
+  <template data-search-enter>
+    <Icon name="enter" inline />
   </template>
 </dialog>
 
@@ -564,6 +571,7 @@ const topics = getTags(posts).slice(0, 6);
     const browse = dialog.querySelector<HTMLAnchorElement>('[data-search-browse]')!;
     const notice = dialog.querySelector<HTMLElement>('[data-search-notice]')!;
     const tileTemplate = dialog.querySelector<HTMLTemplateElement>('[data-search-tile]')!;
+    const enterTemplate = dialog.querySelector<HTMLTemplateElement>('[data-search-enter]')!;
 
     let trigger: HTMLElement | null = null;
     let active = 0;
@@ -709,7 +717,7 @@ const topics = getTags(posts).slice(0, 6);
         const enter = document.createElement('span');
         enter.className = 'result__enter';
         enter.setAttribute('aria-hidden', 'true');
-        enter.textContent = '↵';
+        enter.append(enterTemplate.content.cloneNode(true));
         link.append(enter);
 
         link.addEventListener('mousemove', () => {
@@ -790,7 +798,7 @@ const topics = getTags(posts).slice(0, 6);
     input.addEventListener('keydown', async (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
-        // Typed faster than the debounce: search now so ↵ never opens a stale result.
+        // Typed faster than the debounce: search now so Enter never opens a stale result.
         if (pending) {
           window.clearTimeout(debounce);
           pending = false;

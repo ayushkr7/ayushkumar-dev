@@ -61,7 +61,7 @@ const socials = [
           about.now.items.map((item) => (
             <li>
               <span class="now__marker" aria-hidden="true">
-                →
+                <Icon name="arrow-right" inline />
               </span>
               <span>{item}</span>
             </li>
@@ -92,7 +92,7 @@ const socials = [
       {
         about.resume && (
           <a class="resume" href={about.resume} download>
-            Download résumé (PDF) ↓
+            Download résumé (PDF) <Icon name="download" inline />
           </a>
         )
       }
@@ -134,7 +134,9 @@ const socials = [
         {
           socials.map((link) => (
             <a href={link.href} target="_blank" rel="me noopener">
-              {link.label} ↗<span class="visually-hidden"> (opens in a new tab)</span>
+              {link.label}
+              <Icon name="external" inline />
+              <span class="visually-hidden"> (opens in a new tab)</span>
             </a>
           ))
         }

@@ -1,40 +1,66 @@
 ---
-/** 24×24 stroke icons (Lucide-style: 1.75 stroke, round caps). Always decorative. */
-const paths = {
-  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
-  moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
-  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
-  close: '<path d="M6 6l12 12M18 6L6 18"/>',
-  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
-  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
-  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
-  chevron: '<path d="M6 9l6 6 6-6"/>',
-  file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+/**
+ * Lucide icons (https://lucide.dev), drawn at the site's 1.75 stroke. Always decorative: pair each one with
+ * visible or visually hidden text. To add an icon, import it from '@lucide/astro/icons/<name>' and list it below.
+ * Icons are imported one by one, so a page only builds the ones it uses.
+ */
+import ArrowDown from '@lucide/astro/icons/arrow-down';
+import ArrowLeft from '@lucide/astro/icons/arrow-left';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import ArrowUp from '@lucide/astro/icons/arrow-up';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import ChevronDown from '@lucide/astro/icons/chevron-down';
+import Copy from '@lucide/astro/icons/copy';
+import CornerDownLeft from '@lucide/astro/icons/corner-down-left';
+import Download from '@lucide/astro/icons/download';
+import FileText from '@lucide/astro/icons/file-text';
+import Info from '@lucide/astro/icons/info';
+import Mail from '@lucide/astro/icons/mail';
+import Menu from '@lucide/astro/icons/menu';
+import Moon from '@lucide/astro/icons/moon';
+import Search from '@lucide/astro/icons/search';
+import Sun from '@lucide/astro/icons/sun';
+import X from '@lucide/astro/icons/x';
+
+const icons = {
+  'arrow-down': ArrowDown,
+  'arrow-left': ArrowLeft,
+  'arrow-right': ArrowRight,
+  'arrow-up': ArrowUp,
+  chevron: ChevronDown,
+  close: X,
+  copy: Copy,
+  download: Download,
+  enter: CornerDownLeft,
+  external: ArrowUpRight,
+  file: FileText,
+  info: Info,
+  mail: Mail,
+  menu: Menu,
+  moon: Moon,
+  search: Search,
+  sun: Sun,
 } as const;
 
-export type IconName = keyof typeof paths;
+export type IconName = keyof typeof icons;
 
 interface Props {
   name: IconName;
+  /** Size in pixels. Ignored when `inline` is set. */
   size?: number;
+  /** For an icon inside a line of text, e.g. "View all →": sized to the text (1em) and aligned with it. */
+  inline?: boolean;
   class?: string;
 }
 
-const { name, size = 18, class: className } = Astro.props;
+const { name, size = 18, inline = false, class: className } = Astro.props;
+const Lucide = icons[name];
 ---
 
-<svg
-  class={className}
-  viewBox="0 0 24 24"
-  width={size}
-  height={size}
-  fill="none"
-  stroke="currentColor"
-  stroke-width="1.75"
-  stroke-linecap="round"
-  stroke-linejoin="round"
+<Lucide
+  class:list={[inline && 'icon-inline', className]}
+  size={inline ? '1em' : size}
+  stroke-width={1.75}
   aria-hidden="true"
   focusable="false"
-  set:html={paths[name]}
 />

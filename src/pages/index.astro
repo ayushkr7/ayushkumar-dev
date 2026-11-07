@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from '../components/PostList.astro';
+import Icon from '../components/Icon.astro';
 import { getPosts, getTags, tagUrl } from '../lib/posts';
 import { about } from '../data/about';
 
@@ -18,8 +19,7 @@ const topics = getTags(posts);
     </p>
     <div class="intro__links">
       <a class="intro__primary" href="/about/">
-        {' '}
-        About me →{' '}
+        About me <Icon name="arrow-right" inline />
       </a>
       <a class="intro__secondary" href="/rss.xml">
         {' '}
@@ -39,8 +39,7 @@ const topics = getTags(posts);
     <div class="latest-head">
       <h2 id="latest" class="section-label">Latest posts</h2>
       <a class="latest-head__all" href="/blog/">
-        {' '}
-        View all →{' '}
+        View all <Icon name="arrow-right" inline />
       </a>
     </div>
     <PostList posts={latest} />
