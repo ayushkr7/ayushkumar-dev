@@ -5,17 +5,34 @@ Pagefind search pop-up, light/dark themes and a single 768px breakpoint.
 
 ## Commands
 
-| Command                | What it does                                                                      |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| `npm install`          | Install dependencies                                                              |
-| `npm run dev`          | Dev server at `localhost:4321` (search shows a notice — no index in dev)          |
-| `npm run build`        | `astro check` → `astro build` → `pagefind --site dist` (static output in `dist/`) |
-| `npm run preview`      | Serve `dist/` locally — use this to try search                                    |
-| `npm run format`       | Format every file with Prettier                                                   |
-| `npm run format:check` | Check formatting without changing any files (useful in CI)                        |
+| Command                | What it does                                                                             |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `npm install`          | Install dependencies                                                                     |
+| `npm run dev`          | Dev server at `localhost:4321/ayushkumar-dev/` (search shows a notice — no index in dev) |
+| `npm run build`        | `astro check` → `astro build` → `pagefind --site dist` (static output in `dist/`)        |
+| `npm run preview`      | Serve `dist/` locally — use this to try search                                           |
+| `npm run format`       | Format every file with Prettier                                                          |
+| `npm run format:check` | Check formatting without changing any files (useful in CI)                               |
 
 Requires Node 20.3+ (Node 22 recommended). `@astrojs/language-server` is pinned via `overrides` in `package.json` so
 `astro check` keeps working on Node < 20.19; you can remove the override once you're on Node 22.
+
+## Deploying
+
+`.github/workflows/deploy.yml` runs on every push to `main` and every pull request, on Node 24: `npm ci`, the Prettier
+check, then `npm run build` (type check, build and search index). Pushes to `main` are then deployed to GitHub Pages;
+pull requests are only checked.
+
+The site is served at **https://ayushkr7.github.io/ayushkumar-dev/**. Because that is a sub-path, `astro.config.mjs`
+sets `base: '/ayushkumar-dev'`, and every internal link and file in `public/` goes through `withBase()` from
+`src/lib/url.ts`. Use it for any new link, e.g. `href={withBase('/blog/')}`. `base` must match the repository name.
+
+One-time setup on GitHub: **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions**. GitHub
+Pages needs a public repository, or a paid plan for a private one.
+
+To move to a custom domain later: set `site` to the domain and remove `base` in `astro.config.mjs`, update the sitemap
+URL in `public/robots.txt`, then add the domain under Settings → Pages and point its DNS at GitHub Pages
+([GitHub's guide](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)).
 
 ## Where things live
 

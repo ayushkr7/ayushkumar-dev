@@ -1,12 +1,13 @@
 ---
 import { site } from '../data/site';
+import { withBase } from '../lib/url';
 ---
 
 <footer class="site-footer">
   <div class="container inner">
     <span>© {site.year} {site.author} · Built with Astro</span>
     <div class="links">
-      <a href="/rss.xml">RSS</a>
+      <a href={withBase('/rss.xml')}>RSS</a>
       {
         site.github && (
           <a href={site.github} rel="me noopener" target="_blank">

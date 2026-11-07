@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { withBase } from './url';
 
 export type Post = CollectionEntry<'blog'>;
 
@@ -8,8 +9,8 @@ export async function getPosts(): Promise<Post[]> {
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
-export const postUrl = (post: Post | string) => `/blog/${typeof post === 'string' ? post : post.id}/`;
-export const tagUrl = (tag: string) => `/blog/?tag=${encodeURIComponent(tag)}`;
+export const postUrl = (post: Post | string) => withBase(`/blog/${typeof post === 'string' ? post : post.id}/`);
+export const tagUrl = (tag: string) => withBase(`/blog/?tag=${encodeURIComponent(tag)}`);
 
 /** Tags used by the given posts, most used first (ties alphabetical). */
 export function getTags(posts: Post[]): string[] {

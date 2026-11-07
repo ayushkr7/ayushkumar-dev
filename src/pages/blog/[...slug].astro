@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Toc from '../../components/Toc.astro';
 import Icon from '../../components/Icon.astro';
 import { formatDate, getPosts, isoDate, postUrl, readingTime, tagUrl, type Post } from '../../lib/posts';
+import { withBase } from '../../lib/url';
 import '../../styles/prose.css';
 
 export const getStaticPaths = (async () => {
@@ -45,7 +46,8 @@ const hasToc = headings.filter((heading) => heading.depth === 2).length >= 2;
 >
   <div class="article-layout">
     <article class="article" data-pagefind-body>
-      <a class="back-link" href="/blog/" data-pagefind-ignore><Icon name="arrow-left" inline /> All posts</a>
+      <a class="back-link" href={withBase('/blog/')} data-pagefind-ignore><Icon name="arrow-left" inline /> All posts</a
+      >
 
       <p class="meta" data-pagefind-ignore>
         <time datetime={isoDate(pubDate)} data-pagefind-meta="date" data-pagefind-sort={`date:${isoDate(pubDate)}`}>

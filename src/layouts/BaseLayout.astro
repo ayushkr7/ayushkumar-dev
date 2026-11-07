@@ -7,6 +7,7 @@ import Header, { type Section } from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SearchDialog from '../components/SearchDialog.astro';
 import { site } from '../data/site';
+import { withBase } from '../lib/url';
 
 interface Props {
   /** Page title; the site name is appended. Omit on Home. */
@@ -35,7 +36,9 @@ const {
 } = Astro.props;
 
 const fullTitle = title ? `${title} · ${site.name}` : site.title;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+// With a `base`, Astro gives the home page as "/yourname-dev" (no slash), which GitHub Pages redirects. Use the real URL.
+const pathname = Astro.url.pathname === withBase('') ? withBase('/') : Astro.url.pathname;
+const canonical = new URL(pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -73,9 +76,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <meta name="color-scheme" content="light dark" />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title={site.name} href={new URL('rss.xml', Astro.site)} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={site.name}
+      href={new URL(withBase('/rss.xml'), Astro.site)}
+    />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
 
     <Font cssVariable="--font-sans" preload />
     <Font cssVariable="--font-mono" preload />

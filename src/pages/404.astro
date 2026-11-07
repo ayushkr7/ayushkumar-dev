@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
+import { withBase } from '../lib/url';
 ---
 
 <BaseLayout title="Page not found" description="The page you were looking for doesn’t exist or has moved." search>
@@ -9,8 +10,8 @@ import Icon from '../components/Icon.astro';
     <h1 class="page-title">Page not found</h1>
     <p class="page-lead">The page you were looking for doesn’t exist or has moved.</p>
     <div class="links">
-      <a href="/"><Icon name="arrow-left" inline /> Home</a>
-      <a href="/blog/">All posts <Icon name="arrow-right" inline /></a>
+      <a href={withBase('/')}><Icon name="arrow-left" inline /> Home</a>
+      <a href={withBase('/blog/')}>All posts <Icon name="arrow-right" inline /></a>
     </div>
   </div>
 </BaseLayout>

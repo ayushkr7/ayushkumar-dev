@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import { about } from '../data/about';
 import { formatMonthYear, isoDate } from '../lib/posts';
+import { withBase } from '../lib/url';
 
 const socials = [
   { label: 'GitHub', href: about.social.github },
@@ -96,7 +97,7 @@ const skills = [
       </ol>
       {
         about.resume && (
-          <a class="resume" href={about.resume} download>
+          <a class="resume" href={withBase(about.resume)} download>
             Download résumé (PDF) <Icon name="download" inline />
           </a>
         )
@@ -151,7 +152,7 @@ const skills = [
             </a>
           ))
         }
-        <a href="/rss.xml">RSS feed</a>
+        <a href={withBase('/rss.xml')}>RSS feed</a>
       </div>
     </section>
   </div>

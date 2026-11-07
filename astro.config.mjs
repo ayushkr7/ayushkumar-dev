@@ -7,8 +7,11 @@ import rehypeMermaid from './src/lib/rehype-mermaid.ts';
 
 // https://astro.build/config
 export default defineConfig({
-  // Used for canonical URLs, RSS and the sitemap. Keep in sync with site.name and public/robots.txt.
-  site: 'https://ayushkumar.dev',
+  // Hosted on GitHub Pages at https://ayushkr7.github.io/ayushkumar-dev/. `base` must match the repository name.
+  // For a custom domain later: set `site` to it and remove `base` (links go through withBase(), so nothing else
+  // changes), then update the sitemap URL in public/robots.txt.
+  site: 'https://ayushkr7.github.io',
+  base: '/ayushkumar-dev',
   output: 'static',
   integrations: [mdx(), sitemap()],
   experimental: {

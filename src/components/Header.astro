@@ -2,6 +2,7 @@
 import Icon from './Icon.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { site } from '../data/site';
+import { withBase } from '../lib/url';
 
 export type Section = 'home' | 'writing' | 'projects' | 'about';
 
@@ -14,15 +15,15 @@ interface Props {
 const { current, showSearch = false } = Astro.props;
 
 const nav: { key: Section; label: string; href: string }[] = [
-  { key: 'writing', label: 'Writing', href: '/blog/' },
-  { key: 'projects', label: 'Projects', href: '/projects/' },
-  { key: 'about', label: 'About', href: '/about/' },
+  { key: 'writing', label: 'Writing', href: withBase('/blog/') },
+  { key: 'projects', label: 'Projects', href: withBase('/projects/') },
+  { key: 'about', label: 'About', href: withBase('/about/') },
 ];
 ---
 
 <header class="site-header">
   <div class="container bar">
-    <a class="logo" href="/" aria-current={current === 'home' ? 'page' : undefined}>
+    <a class="logo" href={withBase('/')} aria-current={current === 'home' ? 'page' : undefined}>
       <span class="logo__block" aria-hidden="true"></span>
       {site.name}
     </a>
@@ -78,7 +79,7 @@ const nav: { key: Section; label: string; href: string }[] = [
         </a>
       ))
     }
-    <a href="/rss.xml">RSS feed</a>
+    <a href={withBase('/rss.xml')}>RSS feed</a>
   </nav>
 </header>
 

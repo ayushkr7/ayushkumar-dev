@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import { formatShortDate, getPosts, getTags, isoDate, postUrl, readingTime, type Post } from '../../lib/posts';
+import { withBase } from '../../lib/url';
 
 const posts = await getPosts();
 const tags = getTags(posts);
@@ -25,10 +26,10 @@ const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
   search
 >
   <div class="container archive">
-    <a class="back-link" href="/"><Icon name="arrow-left" inline /> Home</a>
+    <a class="back-link" href={withBase('/')}><Icon name="arrow-left" inline /> Home</a>
     <h1 class="page-title archive__title">All posts</h1>
     <p class="page-lead">
-      Everything I’ve written, newest first. Prefer a feed? <a href="/rss.xml">Subscribe via RSS</a>.
+      Everything I’ve written, newest first. Prefer a feed? <a href={withBase('/rss.xml')}>Subscribe via RSS</a>.
     </p>
 
     <div class="controls">

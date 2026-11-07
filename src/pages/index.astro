@@ -4,6 +4,7 @@ import PostList from '../components/PostList.astro';
 import Icon from '../components/Icon.astro';
 import { getPosts, getTags, tagUrl } from '../lib/posts';
 import { about } from '../data/about';
+import { withBase } from '../lib/url';
 
 const posts = await getPosts();
 const latest = posts.slice(0, 5);
@@ -18,10 +19,10 @@ const topics = getTags(posts);
       I’m {about.name}, a {about.role} writing about TypeScript, web performance and the tools I use to ship.
     </p>
     <div class="intro__links">
-      <a class="intro__primary" href="/about/">
+      <a class="intro__primary" href={withBase('/about/')}>
         About me <Icon name="arrow-right" inline />
       </a>
-      <a class="intro__secondary" href="/rss.xml">
+      <a class="intro__secondary" href={withBase('/rss.xml')}>
         {' '}
         RSS feed{' '}
       </a>
@@ -38,7 +39,7 @@ const topics = getTags(posts);
   <section class="container" aria-labelledby="latest">
     <div class="latest-head">
       <h2 id="latest" class="section-label">Latest posts</h2>
-      <a class="latest-head__all" href="/blog/">
+      <a class="latest-head__all" href={withBase('/blog/')}>
         View all <Icon name="arrow-right" inline />
       </a>
     </div>
