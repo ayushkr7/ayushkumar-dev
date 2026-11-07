@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { lightTheme, darkTheme, codeFigure } from './src/lib/shiki.ts';
@@ -11,6 +11,29 @@ export default defineConfig({
   site: 'https://elliotalderson.dev',
   output: 'static',
   integrations: [mdx(), sitemap()],
+  experimental: {
+    // Astro also generates a fallback for each font, scaled to match its size, so text barely moves when it swaps in.
+    fonts: [
+      {
+        provider: fontProviders.fontsource(),
+        name: 'IBM Plex Sans',
+        cssVariable: '--font-sans',
+        weights: [400, 500, 600],
+        styles: ['normal'],
+        display: 'swap',
+        fallbacks: ['system-ui'],
+      },
+      {
+        provider: fontProviders.fontsource(),
+        name: 'IBM Plex Mono',
+        cssVariable: '--font-mono',
+        weights: [400, 500],
+        styles: ['normal'],
+        display: 'swap',
+        fallbacks: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+      },
+    ],
+  },
   vite: {
     build: {
       // Mermaid's chunks are large but only lazy-loaded on posts that contain a diagram.

@@ -16,102 +16,98 @@ const socials = [
   title="About"
   description={`About ${about.name}: ${about.role} at ${about.company}. Bio, current focus, experience, tools and how to get in touch.`}
   section="about"
+  search
 >
   <div class="container about">
     <section class="intro">
-      {
-        about.portrait ? (
-          <Image
-            class="portrait"
-            src={about.portrait}
-            alt={about.portraitAlt}
-            width={176}
-            height={176}
-            loading="eager"
-          />
-        ) : (
-          <div class="portrait portrait--initials" aria-hidden="true">
-            {about.initials}
-          </div>
-        )
-      }
+      {about.portrait ? (
+        <Image class="portrait" src={about.portrait} alt={about.portraitAlt} width={176} height={176} loading="eager" />
+      ) : (
+        <div class="portrait portrait--initials" aria-hidden="true">
+          {about.initials}
+        </div>
+      )}
       <div class="intro__text">
         <h1 class="page-title">Hi, I’m {about.name}.</h1>
-        <p class="intro__role">{about.role} at {about.company} · {about.location}</p>
+        <p class="intro__role">
+          {about.role} at {about.company} · {about.location}
+        </p>
       </div>
     </section>
 
     <div class="bio">
-      {about.bio.map((paragraph) => <p>{paragraph}</p>)}
+      {about.bio.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
     </div>
 
     <section class="block" aria-labelledby="now">
       <div class="section-head">
-        <h2 id="now" class="section-label">Now</h2>
+        <h2 id="now" class="section-label">
+          Now
+        </h2>
         <span class="section-head__meta">
           Updated <time datetime={isoDate(about.now.updated)}>{formatMonthYear(about.now.updated)}</time>
         </span>
       </div>
       <ul class="now">
-        {
-          about.now.items.map((item) => (
-            <li>
-              <span class="now__marker" aria-hidden="true">
-                →
-              </span>
-              <span>{item}</span>
-            </li>
-          ))
-        }
+        {about.now.items.map((item) => (
+          <li>
+            <span class="now__marker" aria-hidden="true">
+              →
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
       </ul>
     </section>
 
     <section class="block" aria-labelledby="experience">
       <div class="section-head">
-        <h2 id="experience" class="section-label">Experience</h2>
+        <h2 id="experience" class="section-label">
+          Experience
+        </h2>
       </div>
       <ol class="jobs">
-        {
-          about.experience.map((job) => (
-            <li class="job">
-              <span class="job__when">{job.when}</span>
-              <div>
-                <p class="job__role">
-                  {job.role} <span class="job__company">· {job.company}</span>
-                </p>
-                <p class="job__summary">{job.summary}</p>
-              </div>
-            </li>
-          ))
-        }
+        {about.experience.map((job) => (
+          <li class="job">
+            <span class="job__when">{job.when}</span>
+            <div>
+              <p class="job__role">
+                {job.role} <span class="job__company">· {job.company}</span>
+              </p>
+              <p class="job__summary">{job.summary}</p>
+            </div>
+          </li>
+        ))}
       </ol>
-      {
-        about.resume && (
-          <a class="resume" href={about.resume} download>
-            Download résumé (PDF) ↓
-          </a>
-        )
-      }
+      {about.resume && (
+        <a class="resume" href={about.resume} download>
+          Download résumé (PDF) ↓
+        </a>
+      )}
     </section>
 
     <section class="block" aria-labelledby="uses">
       <div class="section-head">
-        <h2 id="uses" class="section-label">Uses &amp; colophon</h2>
+        <h2 id="uses" class="section-label">
+          Uses &amp; colophon
+        </h2>
       </div>
       <dl class="uses">
-        {
-          about.uses.map((item) => (
-            <div class="uses__row">
-              <dt>{item.label}</dt>
-              <dd>{item.value}</dd>
-            </div>
-          ))
-        }
+        {about.uses.map((item) => (
+          <div class="uses__row">
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
       </dl>
     </section>
 
     <section class="contact" aria-labelledby="contact">
-      <h2 id="contact" class="contact__title">Get in touch</h2>
+      <h2 id="contact" class="contact__title">
+        Get in touch
+      </h2>
       <p class="contact__text">
         Questions about a post, a bug in one of my projects, or just want to say hi — email is best. I usually reply
         within a few days.
@@ -123,17 +119,17 @@ const socials = [
         </a>
         <button type="button" class="btn-secondary" data-copy-email={about.email}>
           <Icon name="copy" size={16} />
-          <span data-copy-email-label aria-live="polite">Copy email</span>
+          <span data-copy-email-label aria-live="polite">
+            Copy email
+          </span>
         </button>
       </div>
       <div class="contact__links">
-        {
-          socials.map((link) => (
-            <a href={link.href} target="_blank" rel="me noopener">
-              {link.label} ↗<span class="visually-hidden"> (opens in a new tab)</span>
-            </a>
-          ))
-        }
+        {socials.map((link) => (
+          <a href={link.href} target="_blank" rel="me noopener">
+            {link.label} ↗<span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        ))}
         <a href="/rss.xml">RSS feed</a>
       </div>
     </section>

@@ -22,9 +22,12 @@ const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
   title="All posts"
   description="Every post on the blog, newest first and grouped by year. Search by title or filter by tag."
   section="writing"
+  search
 >
   <div class="container archive">
-    <a class="back-link" href="/">← Home</a>
+    <a class="back-link" href="/">
+      ← Home
+    </a>
     <h1 class="page-title archive__title">All posts</h1>
     <p class="page-lead">
       Everything I’ve written, newest first. Prefer a feed? <a href="/rss.xml">Subscribe via RSS</a>.
@@ -43,60 +46,64 @@ const plural = (n: number) => `${n} ${n === 1 ? 'post' : 'posts'}`;
           aria-keyshortcuts="/"
           data-archive-search
         />
-        <kbd class="field__hint" aria-hidden="true">/</kbd>
+        <kbd class="field__hint" aria-hidden="true">
+          /
+        </kbd>
       </label>
 
       <div class="filters" role="group" aria-label="Filter by tag">
-        <button type="button" class="filter" aria-pressed="true" data-archive-tag="all">All</button>
-        {
-          tags.map((tag) => (
-            <button type="button" class="filter" aria-pressed="false" data-archive-tag={tag}>
-              #{tag}
-            </button>
-          ))
-        }
+        <button type="button" class="filter" aria-pressed="true" data-archive-tag="all">
+          All
+        </button>
+        {tags.map((tag) => (
+          <button type="button" class="filter" aria-pressed="false" data-archive-tag={tag}>
+            #{tag}
+          </button>
+        ))}
       </div>
     </div>
 
-    <p class="count" aria-live="polite" data-archive-count data-total={posts.length}>{plural(posts.length)}</p>
+    <p class="count" aria-live="polite" data-archive-count data-total={posts.length}>
+      {plural(posts.length)}
+    </p>
 
-    {
-      groups.map((group) => (
-        <section class="year" aria-labelledby={`year-${group.year}`} data-archive-year>
-          <div class="year__head">
-            <h2 id={`year-${group.year}`} class="year__title">
-              {group.year}
-            </h2>
-            <span class="year__count" data-archive-year-count>
-              {plural(group.posts.length)}
-            </span>
-          </div>
-          <ol class="rows">
-            {group.posts.map((post) => (
-              <li
-                class="row"
-                data-archive-row
-                data-title={post.data.title.toLowerCase()}
-                data-tags={post.data.tags.join(' ')}
-              >
-                <a class="row__title" href={postUrl(post)}>
-                  {post.data.title}
-                </a>
-                <span class="row__date">
-                  <time datetime={isoDate(post.data.pubDate)}>{formatShortDate(post.data.pubDate)}</time>
-                  <span class="row__read"> · {readingTime(post.body)} min</span>
-                </span>
-                <span class="row__tags">{post.data.tags.map((tag) => `#${tag}`).join(' ')}</span>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ))
-    }
+    {groups.map((group) => (
+      <section class="year" aria-labelledby={`year-${group.year}`} data-archive-year>
+        <div class="year__head">
+          <h2 id={`year-${group.year}`} class="year__title">
+            {group.year}
+          </h2>
+          <span class="year__count" data-archive-year-count>
+            {plural(group.posts.length)}
+          </span>
+        </div>
+        <ol class="rows">
+          {group.posts.map((post) => (
+            <li
+              class="row"
+              data-archive-row
+              data-title={post.data.title.toLowerCase()}
+              data-tags={post.data.tags.join(' ')}
+            >
+              <a class="row__title" href={postUrl(post)}>
+                {post.data.title}
+              </a>
+              <span class="row__date">
+                <time datetime={isoDate(post.data.pubDate)}>{formatShortDate(post.data.pubDate)}</time>
+                <span class="row__read"> · {readingTime(post.body)} min</span>
+              </span>
+              <span class="row__tags">{post.data.tags.map((tag) => `#${tag}`).join(' ')}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
 
     <div class="empty" data-archive-empty hidden>
       <p class="empty__text">No posts match your filters.</p>
-      <button type="button" class="empty__clear" data-archive-clear>Clear filters</button>
+      <button type="button" class="empty__clear" data-archive-clear>
+        Clear filters
+      </button>
     </div>
   </div>
 </BaseLayout>

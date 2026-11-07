@@ -9,7 +9,7 @@ const latest = posts.slice(0, 5);
 const topics = getTags(posts);
 ---
 
-<BaseLayout section="writing" search>
+<BaseLayout section="home" search>
   <section class="container intro">
     <p class="intro__prompt">$ cat ~/about.txt</p>
     <h1 class="intro__title">Notes on building fast, durable software for the web.</h1>
@@ -17,38 +17,47 @@ const topics = getTags(posts);
       I’m {about.name}, a Software Engineer writing about TypeScript, web performance and the tools I use to ship.
     </p>
     <div class="intro__links">
-      <a class="intro__primary" href="/about/"> About me → </a>
-      <a class="intro__secondary" href="/rss.xml"> RSS feed </a>
-      {
-        about.social.github && (
-          <a class="intro__secondary" href={about.social.github} rel="me noopener" target="_blank">
-            GitHub
-          </a>
-        )
-      }
+      <a class="intro__primary" href="/about/">
+        {' '}
+        About me →{' '}
+      </a>
+      <a class="intro__secondary" href="/rss.xml">
+        {' '}
+        RSS feed{' '}
+      </a>
+      {about.social.github && (
+        <a class="intro__secondary" href={about.social.github} rel="me noopener" target="_blank">
+          GitHub
+        </a>
+      )}
     </div>
   </section>
 
   <section class="container" aria-labelledby="latest">
     <div class="latest-head">
-      <h2 id="latest" class="section-label">Latest posts</h2>
-      <a class="latest-head__all" href="/blog/"> View all → </a>
+      <h2 id="latest" class="section-label">
+        Latest posts
+      </h2>
+      <a class="latest-head__all" href="/blog/">
+        {' '}
+        View all →{' '}
+      </a>
     </div>
     <PostList posts={latest} />
   </section>
 
   <section class="container topics" aria-labelledby="topics">
-    <h2 id="topics" class="section-label">Topics</h2>
+    <h2 id="topics" class="section-label">
+      Topics
+    </h2>
     <ul class="topics__list" role="list">
-      {
-        topics.map((tag) => (
-          <li>
-            <a class="topic" href={tagUrl(tag)}>
-              {tag}
-            </a>
-          </li>
-        ))
-      }
+      {topics.map((tag) => (
+        <li>
+          <a class="topic" href={tagUrl(tag)}>
+            {tag}
+          </a>
+        </li>
+      ))}
     </ul>
   </section>
 </BaseLayout>

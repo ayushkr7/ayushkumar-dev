@@ -25,8 +25,7 @@
   --scrim: rgba(22, 23, 26, 0.32);
   --panel-shadow: 0 24px 64px rgba(22, 23, 26, 0.16);
 
-  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* --font-sans and --font-mono are set by Astro's Fonts API (see astro.config.mjs). */
 
   --radius-chip: 4px;
   --radius-pill: 6px;

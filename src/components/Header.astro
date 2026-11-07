@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { site } from '../data/site';
 
-export type Section = 'writing' | 'projects' | 'about';
+export type Section = 'home' | 'writing' | 'projects' | 'about';
 
 interface Props {
   current?: Section;
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { current, showSearch = false } = Astro.props;
+console.log(Astro.props);
 
 const nav: { key: Section; label: string; href: string }[] = [
   { key: 'writing', label: 'Writing', href: '/blog/' },
@@ -22,36 +23,33 @@ const nav: { key: Section; label: string; href: string }[] = [
 
 <header class="site-header">
   <div class="container bar">
-    <a class="logo" href="/">
-      <span class="logo__block" aria-hidden="true"></span>{site.name}
+    <a class="logo" href="/" aria-current={current === 'home' ? 'page' : undefined}>
+      <span class="logo__block" aria-hidden="true"></span>
+      {site.name}
     </a>
 
     <div class="actions">
       <nav class="primary-nav" aria-label="Primary">
-        {
-          nav.map((item) => (
-            <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
-              {item.label}
-            </a>
-          ))
-        }
+        {nav.map((item) => (
+          <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))}
       </nav>
       <span class="divider" aria-hidden="true"></span>
 
-      {
-        showSearch && (
-          <button
-            type="button"
-            class="icon-btn"
-            data-search-open
-            aria-label="Search posts"
-            aria-haspopup="dialog"
-            aria-keyshortcuts="Control+K Meta+K"
-          >
-            <Icon name="search" />
-          </button>
-        )
-      }
+      {showSearch && (
+        <button
+          type="button"
+          class="icon-btn"
+          data-search-open
+          aria-label="Search posts"
+          aria-haspopup="dialog"
+          aria-keyshortcuts="Control+K Meta+K"
+        >
+          <Icon name="search" />
+        </button>
+      )}
 
       <ThemeToggle />
 
@@ -70,13 +68,11 @@ const nav: { key: Section; label: string; href: string }[] = [
   </div>
 
   <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile" data-menu hidden>
-    {
-      nav.map((item) => (
-        <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
-          {item.label}
-        </a>
-      ))
-    }
+    {nav.map((item) => (
+      <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
+        {item.label}
+      </a>
+    ))}
     <a href="/rss.xml">RSS feed</a>
   </nav>
 </header>
