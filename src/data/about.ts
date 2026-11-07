@@ -1,9 +1,13 @@
 import type { ImageMetadata } from 'astro';
+import portrait from '../assets/portrait.jpg';
 
 /**
  * Everything personal on the site lives here: the About page, the header/footer links,
  * the Home intro and RSS metadata all read from this file. Update it without touching
- * any page code. The current values are a fictional sample persona; replace them with your own.
+ * any page code.
+ *
+ * Filled in from the public GitHub profile (github.com/ayushkr7) and a LinkedIn profile export.
+ * Anything neither had is a placeholder in [square brackets]. Replace those.
  */
 
 export interface Job {
@@ -33,66 +37,68 @@ export interface About {
   experience: Job[];
   uses: { label: string; value: string }[];
   email: string;
-  social: { github?: string; linkedin?: string; mastodon?: string };
+  social: { github?: string; linkedin?: string; x?: string; mastodon?: string };
   /** Path to a file in public/, e.g. "/resume.pdf". Leave undefined to hide the download link. */
   resume?: string;
 }
 
 export const about: About = {
-  name: 'Elliot Alderson',
-  initials: 'EA',
-  role: 'Software Engineer',
-  company: 'E Corp',
-  location: 'New York, USA',
-  portraitAlt: 'Portrait of Elliot Alderson',
+  name: 'Ayush Kumar',
+  initials: 'AK',
+  role: 'Frontend Developer',
+  company: 'Victoria’s Secret & Co.',
+  location: 'Bengaluru, India',
+  portrait,
+  portraitAlt: 'Portrait of Ayush Kumar',
   bio: [
-    'I’m a Software Engineer who spends the day working out how systems fail. Most evenings I end up rebuilding something small to understand it better, which is how I started caring about fast, accessible websites.',
-    'This blog is where I write those experiments down — notes on Astro, CSS, web performance and the build and deploy steps around them. Posts are practical and short enough to read over a coffee.',
-    'I learned computers at my father’s repair shop, Mr. Robot, and taught myself the rest. Some people know me online as samsepi0l.',
+    'I’m a frontend developer at Victoria’s Secret & Co. in Bengaluru. I work across the MERN stack — MongoDB, Express, React and Node.js — and have also built web applications with Django and Dash.',
+    'I’m passionate about building for the web, solving problems and learning how systems work under the hood. This blog is where I write down what I learn — notes on Astro, CSS, web performance and the build and deploy steps around them.',
+    'On the side I’m building Solve Problemset, a client-side problem-set generator for DSA and competitive-programming practice.',
   ],
   now: {
-    updated: new Date('2026-10-01'),
+    updated: new Date('2026-11-07'),
     items: [
-      'Writing a short series on Astro content collections.',
-      'Maintaining astro-minimal-blog, the starter theme behind this site.',
-      'Taking Flipper on longer walks, away from every screen I own.',
+      'Working as a Frontend Developer at Victoria’s Secret & Co. in Bengaluru.',
+      'Building Solve Problemset, a client-side generator for DSA and competitive-programming problem sets.',
     ],
   },
   experience: [
     {
-      when: '2024 — now',
-      role: 'Software Engineer',
-      company: 'E Corp',
-      summary: 'Work on the cybersecurity team at the conglomerate I still call Evil Corp.',
+      when: '2026 — now',
+      role: 'Frontend Developer',
+      company: 'Victoria’s Secret & Co.',
+      summary: '[One sentence on what you work on there.]',
     },
     {
-      when: '2021 — 2024',
-      role: 'Senior Software Engineer',
-      company: 'Allsafe Cybersecurity',
-      summary: 'Protected client networks, with E Corp as the largest account.',
+      when: '2023 — 2026',
+      role: 'Associate Frontend Web Developer',
+      company: 'Victoria’s Secret & Co.',
+      summary: '[One sentence on what you worked on there.]',
     },
     {
-      when: '2018 — 2021',
-      role: 'Security Engineer',
-      company: 'Amaya',
-      summary: 'Worked in the encryption division of a San Francisco quantum computing company.',
-    },
+      when: '2023',
+      role: 'Software Engineer Intern',
+      company: 'Honeywell',
+      summary:
+        'Built a remote network-device monitoring tool on SNMPv3, with a Dash dashboard inside a Django app showing live telemetry.',
+    }
   ],
   uses: [
-    { label: 'Editor', value: 'Vim' },
-    { label: 'Terminal', value: 'GNOME Terminal' },
-    { label: 'Machine', value: 'Kali Linux laptop, Raspberry Pi' },
-    { label: 'Languages', value: 'TypeScript, CSS' },
+    { label: 'Editor', value: '[Your editor]' },
+    { label: 'Terminal', value: '[Your terminal]' },
+    { label: 'Machine', value: '[Your machine]' },
+    { label: 'Languages', value: 'JavaScript, TypeScript, Python, C++' },
+    { label: 'Stack', value: 'React, Redux, Next.js, Node.js, Express, MongoDB, Jest' },
     { label: 'Framework', value: 'Astro' },
     { label: 'Search', value: 'Pagefind' },
     { label: 'Type', value: 'IBM Plex Sans & Mono' },
-    { label: 'Hosting', value: 'Steel Mountain' },
+    { label: 'Hosting', value: '[Your host]' },
   ],
-  email: 'samsepi0l@elliotalderson.dev',
+  email: 'krayush.ak@gmail.com',
   social: {
-    github: 'https://github.com/elliotalderson-dev',
-    linkedin: 'https://www.linkedin.com/in/elliotalderson-dev',
-    mastodon: 'https://mastodon.social/@elliot_alderson_dev',
+    github: 'https://github.com/ayushkr7',
+    linkedin: 'https://www.linkedin.com/in/krayush-ak/',
+    x: 'https://x.com/krayush_ak',
   },
   resume: '/resume.pdf',
 };

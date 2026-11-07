@@ -7,8 +7,8 @@ import rehypeMermaid from './src/lib/rehype-mermaid.ts';
 
 // https://astro.build/config
 export default defineConfig({
-  // Sample domain — replace with your real domain (used for canonical URLs, RSS and the sitemap).
-  site: 'https://elliotalderson.dev',
+  // Used for canonical URLs, RSS and the sitemap. Keep in sync with site.name and public/robots.txt.
+  site: 'https://ayushkumar.dev',
   output: 'static',
   integrations: [mdx(), sitemap()],
   experimental: {

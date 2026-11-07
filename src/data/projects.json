@@ -1,73 +1,63 @@
 [
   {
-    "id": "astro-minimal-blog",
-    "name": "astro-minimal-blog",
-    "description": "This site as a starter theme: design tokens, dark mode without a flash, and Pagefind search.",
+    "id": "solveproblemset",
+    "name": "solveproblemset",
+    "description": "A client-side DSA / competitive-programming problemset generator.",
     "status": "active",
-    "stack": ["Astro", "CSS", "Pagefind"],
+    "stack": ["TypeScript", "CSS"],
     "year": 2026,
-    "updated": "2026-10-20",
-    "demo": "https://astro-minimal-blog.elliotalderson.dev",
-    "source": "https://github.com/elliotalderson-dev/astro-minimal-blog",
-    "post": "a-minimal-dark-mode-without-a-flash"
+    "updated": "2026-11-05",
+    "demo": "https://solveproblemset.com",
+    "source": "https://github.com/ayushkr7/solveproblemset"
   },
   {
-    "id": "remark-read-time",
-    "name": "remark-read-time",
-    "description": "Remark plugin that adds a read-time field to every entry in an Astro content collection.",
-    "status": "active",
-    "stack": ["TypeScript", "remark"],
-    "year": 2026,
-    "updated": "2026-09-02",
-    "source": "https://github.com/elliotalderson-dev/remark-read-time",
-    "npm": "https://www.npmjs.com/package/remark-read-time"
-  },
-  {
-    "id": "linkcheck-action",
-    "name": "linkcheck-action",
-    "description": "GitHub Action that crawls a built static site and fails the build on broken links.",
-    "status": "maintained",
-    "stack": ["Node.js", "GitHub Actions"],
-    "year": 2025,
-    "updated": "2026-08-14",
-    "source": "https://github.com/elliotalderson-dev/linkcheck-action",
-    "post": "what-i-check-before-every-deploy"
-  },
-  {
-    "id": "og-cards",
-    "name": "og-cards",
-    "description": "Generates Open Graph images for posts at build time from the title and tags.",
-    "status": "maintained",
-    "stack": ["Astro", "Satori"],
-    "year": 2025,
-    "updated": "2026-03-10",
-    "source": "https://github.com/elliotalderson-dev/og-cards"
-  },
-  {
-    "id": "jekyll-to-astro",
-    "name": "jekyll-to-astro",
-    "description": "Scripts used to migrate this blog from Jekyll.",
+    "id": "book-store-manager",
+    "name": "book-store-manager",
+    "description": "Fullstack bookstore manager app made using MERN stack with CRUD feature implemented.",
     "status": "archived",
-    "stack": ["Node.js"],
-    "year": 2025,
-    "source": "https://github.com/elliotalderson-dev/jekyll-to-astro"
-  },
-  {
-    "id": "tokens-to-css",
-    "name": "tokens-to-css",
-    "description": "Turns a JSON token file into CSS custom properties.",
-    "status": "archived",
-    "stack": ["TypeScript"],
-    "year": 2024,
-    "source": "https://github.com/elliotalderson-dev/tokens-to-css"
-  },
-  {
-    "id": "tiny-status",
-    "name": "tiny-status",
-    "description": "A one-page status board for side projects.",
-    "status": "archived",
-    "stack": ["HTML", "CSS"],
+    "stack": ["MongoDB", "Express", "React", "Node.js"],
     "year": 2023,
-    "source": "https://github.com/elliotalderson-dev/tiny-status"
+    "updated": "2023-09-07",
+    "source": "https://github.com/ayushkr7/book-store-manager"
+  },
+  {
+    "id": "mern-blog-app",
+    "name": "mern-blog-app",
+    "description": "Fullstack blog app made using React.js, Node.js Express, MongoDB Atlas with JWT enabled to securely transfer information.",
+    "status": "archived",
+    "stack": ["React", "Node.js", "Express", "MongoDB Atlas", "JWT"],
+    "year": 2023,
+    "updated": "2023-08-29",
+    "source": "https://github.com/ayushkr7/mern-blog-app"
+  },
+  {
+    "id": "activity-tracker",
+    "name": "activity-tracker",
+    "description": "Fullstack web app to track your daily activity with CRUD functionality made using React.js, Node.js, Express.js, MongoDB Atlas.",
+    "status": "archived",
+    "stack": ["React", "Node.js", "Express", "MongoDB Atlas", "Bootstrap"],
+    "year": 2023,
+    "updated": "2023-08-19",
+    "source": "https://github.com/ayushkr7/activity-tracker"
+  },
+  {
+    "id": "webrtc-video-chat",
+    "name": "webrtc-video-chat",
+    "description": "Peer to Peer video chat application made using React.js, Socket.io and webRTC.",
+    "status": "archived",
+    "stack": ["React", "Socket.IO", "WebRTC"],
+    "year": 2023,
+    "updated": "2023-08-16",
+    "source": "https://github.com/ayushkr7/webrtc-video-chat"
+  },
+  {
+    "id": "imagepark",
+    "name": "ImagePark",
+    "description": "Fullstack Image sharing web app with Pinterest based UI made using Next.js, React.js, NextAuth, Tailwind CSS and Firebase.",
+    "status": "archived",
+    "stack": ["Next.js", "React", "NextAuth", "Tailwind CSS", "Firebase"],
+    "year": 2023,
+    "updated": "2023-08-15",
+    "source": "https://github.com/ayushkr7/ImagePark"
   }
 ]

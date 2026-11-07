@@ -1,74 +1,134 @@
 %PDF-1.4
-%“Œ‹ž ReportLab Generated PDF document (opensource)
 1 0 obj
-<<
-/F1 2 0 R /F2 3 0 R
->>
+<< /Type /Catalog /Pages 2 0 R >>
 endobj
 2 0 obj
-<<
-/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
->>
+<< /Type /Pages /Kids [7 0 R 9 0 R] /Count 2 >>
 endobj
 3 0 obj
-<<
-/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
->>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
 endobj
 4 0 obj
-<<
-/Contents 8 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 7 0 R /Resources <<
-/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
->> /Rotate 0 /Trans <<
-
->> 
-  /Type /Page
->>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<<
-/PageMode /UseNone /Pages 7 0 R /Type /Catalog
->>
+<< /Title (Ayush Kumar: Résumé) /Author (Ayush Kumar) /Subject (Résumé) >>
 endobj
 6 0 obj
-<<
-/Author (Elliot Alderson) /CreationDate (D:20261107002423+05'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20261107002423+05'00') /Producer (ReportLab PDF Library - \(opensource\)) 
-  /Subject (R\351sum\351) /Title (Elliot Alderson: R\351sum\351) /Trapped /False
->>
+<< /Length 5439 >>
+stream
+BT 0.09 0.09 0.10 rg /F2 22 Tf 56.0 736.0 Td (Ayush Kumar) Tj ET
+BT 0.42 0.42 0.45 rg /F1 11 Tf 56.0 716.0 Td (Frontend Developer · Victoria’s Secret & Co. · Bengaluru, India) Tj ET
+BT 0.17 0.31 0.84 rg /F1 9.5 Tf 56.0 701.0 Td (krayush.ak@gmail.com  ·  ayushkumar.dev  ·  github.com/ayushkr7  ·  linkedin.com/in/krayush-ak) Tj ET
+BT 0.17 0.31 0.84 rg /F2 9 Tf 56.0 673.0 Td (SUMMARY) Tj ET
+0.42 0.42 0.45 RG 0.5 w 56 668.0 m 556 668.0 l S
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 653.0 Td (Full-stack developer proficient in the MERN stack \(MongoDB, Express.js, React.js, Node.js\), with hands-on) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 640.0 Td (experience building web applications with Django and the Dash framework, and a strong command of data) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 627.0 Td (structures and algorithms.) Tj ET
+BT 0.17 0.31 0.84 rg /F2 9 Tf 56.0 604.0 Td (EXPERIENCE) Tj ET
+0.42 0.42 0.45 RG 0.5 w 56 599.0 m 556 599.0 l S
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 584.0 Td (Victoria’s Secret & Co.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 490.5 584.0 Td (Bengaluru, India) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 570.0 Td (Frontend Developer) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 475.5 570.0 Td (Apr 2026 — present) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 557.0 Td (Associate Frontend Web Developer) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 467.5 557.0 Td (Oct 2023 — Mar 2026) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 536.0 Td (GeeksforGeeks) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 522.0 Td (Technical Content Writer) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 464.9 522.0 Td (Aug 2023 — Sep 2023) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 508.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 508.0 Td (Wrote, edited and improved technical content.) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 488.5 Td (Honeywell) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 490.5 488.5 Td (Bengaluru, India) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 474.5 Td (Software Engineer Intern) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 467.9 474.5 Td (Jan 2023 — Jun 2023) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 460.5 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 460.5 Td (Designed and implemented a remote network device monitoring solution using SNMPv3.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 448.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 448.0 Td (Configured SNMP managers and agents across VirtualBox virtual machines, physical PCs and Raspberry Pi) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 435.5 Td (devices using Net-SNMP and PySNMP.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 423.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 423.0 Td (Developed an SNMP manager dashboard in Dash, integrated within a Django-based GUI, with role-based access) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 410.5 Td (control and custom OIDs created via Bash scripts.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 398.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 398.0 Td (Implemented real-time telemetry collection from remote devices using Dash callbacks, rendered as textual metrics) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 385.5 Td (and interactive graphs with hot reloading.) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 366.0 Td (TAM Enterprises) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 352.0 Td (Community Manager) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 467.0 352.0 Td (Nov 2020 — Apr 2021) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 338.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 338.0 Td (Hosted 15+ webinars focused on developing professional and life skills.) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 318.5 Td (Sri Sri Institute For Advanced Research) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 304.5 Td (Web Developer Intern) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 467.4 304.5 Td (Oct 2020 — Feb 2021) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 290.5 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 290.5 Td (Developed the website of the “Sri Sri Global Meditating Scientists and Doctors Association”.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 278.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 278.0 Td (Worked with HTML, CSS, JavaScript and WordPress to implement various features.) Tj ET
+BT 0.17 0.31 0.84 rg /F2 9 Tf 56.0 248.5 Td (PROJECTS) Tj ET
+0.42 0.42 0.45 RG 0.5 w 56 243.5 m 556 243.5 l S
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 228.5 Td (Solve Problemset) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 215.5 Td (Client-side DSA / competitive-programming problem-set generator.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 56.0 203.0 Td (TypeScript · solveproblemset.com) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 188.0 Td (ImagePark) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 175.0 Td (Full-stack image-sharing app with a Pinterest-style UI.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 56.0 162.5 Td (Next.js, React, NextAuth, Tailwind CSS, Firebase) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 147.5 Td (MERN blog app) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 134.5 Td (Full-stack blog with a JWT-secured API.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 56.0 122.0 Td (React, Node.js, Express, MongoDB Atlas) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 107.0 Td (WebRTC video chat) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 94.0 Td (Peer-to-peer video chat application.) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 56.0 81.5 Td (React, Socket.IO, WebRTC) Tj ET
+BT 0.42 0.42 0.45 rg /F1 8 Tf 285.5 32 Td (Page 1 of 2) Tj ET
+endstream
 endobj
 7 0 obj
-<<
-/Count 1 /Kids [ 4 0 R ] /Type /Pages
->>
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
 endobj
 8 0 obj
-<<
-/Filter [ /ASCII85Decode /FlateDecode ] /Length 1804
->>
+<< /Length 1600 >>
 stream
-Gau`ThfIL2&:WfGfZ2bV30sK+5$^eE?.uY[JPNC)GnKaZFP%4gjDb%k2mS"%L:#7ROp=+nGcboWm=)Yt&TGPi;E^3Fi:R5uh[gnE-8QdYj29prL6KngVm[`[;CCh[5(P,<S2^o`,Xpn!it+/*@gW]cqm#I>6RW8X5,bRSHEmRU:ELneSA1a_4UXP#$ZJ#JF"Ro,j=)Q1`G[I+#:@2ii(on>#JkiB"S[L%%R"dD0Fhe"NrKeG!CEfg"VpH54[l2%.2=dW(lF7[7+D@qlgNaB)pn)"rcq8CorrB7c@C/)M]ZmA?_pqJiUcgGDJ9r=Aqe5NGOn&'iiU6Z]K%Ftf-X;-aLIY);^[^Hq):4F'^o8mga.;Ehe^@Y?:4m7@]rR!ph4kn]0!UY*NaKDrquco`TZWKEPm7lcj/>;<ZM6[4&-d*r>;%anG=gAlWP,p0`&+#WYGm1_nHf)r>8e\@Jo3WU#0+hAMTHoQW7oTQigKFS#h4l>f'+5Ka(ZuR*-6.[5M-#Qnb1V_9>c,_J.-`<.cf*SqEGPO_HK^8n#VJQq4>fZ"<9<MT2<0i/?S!26a&cr'D>K].b(_]<K.$/5aZf.[Wa<lj>0oF1Eo"(oIQ1?@S$*,==Zmqdqh!)L`M3gHZ!=p^<ilr5S=$V7YDN,Gt*1$+.H[jiL9Q'Ss@E_uEI4Whhb0JQ0f?8b+(O#mcB=35O!R`fD)XdXD0K9N!jF0(n1hdL_(:D*@+M)snXAoH_,Q];'SfBk/CI?!D%%EDV"0G"\QCO,F7Ya?'Csm$@:'LqcKg!%G#%+PD[95umtA+9d@e<<atQo(85GWZc")6Z!s.,0OPKMAanq<#3F2But)k*_Y&iml@P$,me<l<L>dF.15"MTFrg5Prb3ZWHHIc/=&u26(kJoYmj3#J*6B2KCG]@4\!8aK(%t#,0r-9iP*QnAF;HD&2e#oC7/;B5NmL@lGkprJeRI_$$^:OhC*(l0pk:jEti5UNk,TKDW[E<%'7b-Xh%YuaKeh?%(oO)\cI%,3EP2][G`"0r,?(DWOW_N_A2@4'Ifo&3ap%4`(i4"9B/M2D&B!3;Y>sWl1#EZ0%cW+OE*q*;_InGausm&%XrGRY0sUR-Ak3nQ\J-6.DP%(:Mk;f0P1CC-mfS0'+&k/';d=\k#30NZ>COqOf88Y>I=FZ>BDIW\g8:EEt'q)@+V>h3Ep3bi_1g)KfLoJD28M?StF%E$A[6N_.7cs2kuFPLP*^YKa0p1\A.I)i-Q!XT-j+<^q0^-Xb0eY.dP1)\H-?e*X6rp(VF.$DjnkN6@[(<ZWAh=9Gpg[d1YcbQ_NW1!$`:.FP!CET(ch(&Q5JA:rp"-9AZl]B3_7*Of;mJ-=*R"@Q#0Ua0M\K?u"(faO6[="[;'h<*@!l0=.Z:0`rt$2)*[2">c'`eMsUn\ihS]gGBS3kEsmGeu!H``'#i9%DZJ!bdgh$F%d?4<c.UdO+23A=#ktml?1@H]dTibZ0IVX<qa[hJMtaA">i%CF/EBGCsmohBZ$S]#L27JFSU6,Fa`)?ApH+Nr*NO34O7do^HZ8Uk=4d+M6(5*l;ul_#q"saNYBBuV@.=q4kotN=dur9?$OWd]_]^TnUPd@Z0g`EEpm,UiL5\qh_'k!_HGaM%:/[k"ZK_s6sPa`.FKi-QsNNbWAWK#6SLIAk#ZTEo-F`#MUgs&k?O-lJW#2Z<f?WuX7=RH=r.BEkC^qn!I!L8J<.E(]DOe$Qs>(;cj&0AhU;Die=s5"=T2k9npK"EXN]h(*l["e#=`_`D%3n:*@amqA6a\Wb8-FXnb2TPccXW1&$l--0E~>endstream
+BT 0.17 0.31 0.84 rg /F2 9 Tf 56.0 726.0 Td (SKILLS) Tj ET
+0.42 0.42 0.45 RG 0.5 w 56 721.0 m 556 721.0 l S
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 706.0 Td (Languages: JavaScript, TypeScript, Python, C++, HTML, CSS) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 693.0 Td (Frameworks and tools: React, Redux, Next.js, Node.js, Express, MongoDB, Django, Dash, Jest, Git, Postman) Tj ET
+BT 0.17 0.31 0.84 rg /F2 9 Tf 56.0 670.0 Td (CERTIFICATIONS) Tj ET
+0.42 0.42 0.45 RG 0.5 w 56 665.0 m 556 665.0 l S
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 650.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 650.0 Td (Responsive Web Design) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 637.5 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 637.5 Td (Programming Fundamentals) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 625.0 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 625.0 Td (Data Analysis with Python: Zero to Pandas) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9.5 Tf 57.0 612.5 Td (•) Tj ET
+BT 0.09 0.09 0.10 rg /F1 9.5 Tf 68.0 612.5 Td (Statistical Data Visualization with Seaborn \(UST\)) Tj ET
+BT 0.17 0.31 0.84 rg /F2 9 Tf 56.0 590.0 Td (EDUCATION) Tj ET
+0.42 0.42 0.45 RG 0.5 w 56 585.0 m 556 585.0 l S
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 570.0 Td (SRM University) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 502.0 570.0 Td (2019 — 2023) Tj ET
+BT 0.09 0.09 0.10 rg /F1 10 Tf 56.0 557.0 Td (BTech, Computer Science) Tj ET
+BT 0.09 0.09 0.10 rg /F2 10.5 Tf 56.0 541.0 Td (Sainik School Nalanda) Tj ET
+BT 0.42 0.42 0.45 rg /F1 9 Tf 502.0 541.0 Td (2011 — 2018) Tj ET
+BT 0.42 0.42 0.45 rg /F1 8 Tf 285.5 32 Td (Page 2 of 2) Tj ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 8 0 R >>
 endobj
 xref
-0 9
+0 10
 0000000000 65535 f 
-0000000061 00000 n 
-0000000102 00000 n 
-0000000209 00000 n 
-0000000321 00000 n 
-0000000524 00000 n 
-0000000592 00000 n 
-0000000887 00000 n 
-0000000946 00000 n 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000218 00000 n 
+0000000320 00000 n 
+0000000410 00000 n 
+0000005901 00000 n 
+0000006037 00000 n 
+0000007689 00000 n 
 trailer
-<<
-/ID 
-[<253b6231c3f83b3a6a2c5ce46062b1bd><253b6231c3f83b3a6a2c5ce46062b1bd>]
-% ReportLab generated PDF document -- digest (opensource)
-
-/Info 6 0 R
-/Root 5 0 R
-/Size 9
->>
+<< /Size 10 /Root 1 0 R /Info 5 0 R >>
 startxref
-2841
+7825
 %%EOF

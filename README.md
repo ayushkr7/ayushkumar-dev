@@ -1,4 +1,4 @@
-# elliotalderson.dev — Astro tech blog
+# Ayush Kumar — Astro tech blog
 
 A minimal, static technical blog built with Astro 5: Home, Article, All posts, Projects and About pages, a site-wide
 Pagefind search pop-up, light/dark themes and a single 768px breakpoint.
@@ -56,14 +56,13 @@ Requires Node 20.3+ (Node 22 recommended). `@astrojs/language-server` is pinned 
 
 - `draft: true` posts appear in `npm run dev` only; they are excluded from every list, route, RSS and the search index in builds.
 
-## Sample data to replace
+## Placeholders to replace
 
-The site ships with a sample persona, Elliot Alderson from _Mr. Robot_, so every page looks finished. The domain,
-email and social handles are made up and the links lead nowhere, so replace them before you deploy:
+Personal details come from the public GitHub profile ([github.com/ayushkr7](https://github.com/ayushkr7)) and a
+LinkedIn profile export: name, role, bio, location, portrait, experience, projects, email and social links.
+`public/resume.pdf` is generated from the same data. Anything neither source had is a placeholder in
+`[square brackets]`, so every page still looks finished. Replace these before you deploy:
 
-- `site` in `astro.config.mjs` and the sitemap URL in `public/robots.txt` (`https://elliotalderson.dev`)
-- `site.name` and `site.title` in `src/data/site.ts`
-- Name, role, bio, now, experience, uses, email and social URLs in `src/data/about.ts`
-- Project links in `src/data/projects.json`
-- `public/resume.pdf` (a sample résumé) — or set `resume: undefined` in `about.ts` to hide the link
-- Portrait: add `src/assets/portrait.jpg`, import it in `about.ts` and set `portrait` (until then initials are shown)
+- In `src/data/about.ts`: the summaries of the two Victoria’s Secret & Co. roles in `experience`, and the Editor,
+  Terminal, Machine and Hosting rows in `uses`
+- The posts in `src/content/blog/` are still sample content

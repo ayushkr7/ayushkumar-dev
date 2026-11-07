@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://elliotalderson.dev/sitemap-index.xml
+Sitemap: https://ayushkumar.dev/sitemap-index.xml
