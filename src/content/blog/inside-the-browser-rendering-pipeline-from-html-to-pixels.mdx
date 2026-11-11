@@ -510,7 +510,7 @@ Display list order is not DOM order. CSS 2.1 Appendix E defines painting order w
 6. Positioned descendants with `z-index: auto` or `0`, and child stacking contexts with `z-index: 0`.
 7. Child stacking contexts with positive `z-index`, in order.
 
-Within an element, the order is background color, background image, border, then content, then outline. Shadows (`box-shadow`) paint beneath the background; text shadows beneath text. Blurred shadows and filters are among the more expensive operations to rasterize.
+Within an element, the order is background color, background image, border, then content. Outlines may be painted with their element or, as Appendix E permits, in a final pass over the whole stacking context. Shadows (`box-shadow`) paint beneath the background; text shadows beneath text. Blurred shadows and filters are among the more expensive operations to rasterize.
 
 ### Stacking contexts
 
@@ -565,7 +565,7 @@ If the whole page were one bitmap, scrolling would require re-rasterizing newly 
 
 This division of labour is Chromium-specific, but other engines have analogous splits.
 
-- **Main thread (renderer)**: JS, style, layout, pre-paint (building property trees), paint (recording display lists), and in current Chromium, **layerization**: deciding which paint chunks go into which composited layers (the “Composite After Paint” architecture). The Chromium team has said it intends to move layerization off the main thread eventually, but a trace of Chrome 153 still shows `Layerize` on the renderer main thread.
+- **Main thread (renderer)**: JS, style, layout, pre-paint (building property trees), paint (recording display lists), and in current Chromium, **layerization**: deciding which paint chunks go into which composited layers (the “Composite After Paint” architecture). Moving layerization off the main thread has been discussed as a possible future step, but a trace of Chrome 153 still shows `Layerize` on the renderer main thread.
 - **Compositor thread (renderer, `cc`)**: receives a **commit** of layers, property trees and display lists from the main thread. It owns the “active tree” used to produce frames, handles scrolling and certain animations, decides which **tiles** need rasterizing, and produces **compositor frames**.
 - **Raster work**: tiles (typically a few hundred pixels square) are rasterized by replaying display lists via Skia. In most configurations today this is **GPU rasterization** executed in the **GPU process** (“out-of-process raster”), with raster worker threads in the renderer used for software raster or image decoding.
 - **Viz (GPU process)**: the display compositor. It aggregates compositor frames from all renderer processes (the page, cross-origin iframes) and the browser UI, then issues the final draw calls to the GPU and presents the frame.
@@ -652,7 +652,7 @@ When an element already has its own composited layer, changing `transform` or `o
 }
 ```
 
-**Caveats** (Requirement: transform and opacity do not _always_ avoid layout or paint):
+**Caveats**: transform and opacity do not _always_ avoid layout or paint.
 
 - If the element is **not already composited**, the first change may require a repaint and re-layerization to promote it, and demotion after the animation ends may repaint again.
 - Changing `opacity` from 1 to less than 1 creates a stacking context, which can change painting order and require repaint.
@@ -862,7 +862,7 @@ Optimisations that map to the mechanisms:
 
 ### Compositor-driven smoothness
 
-Because Chromium handles scrolling on the compositor thread, scrolling remains smooth during long tasks, unless a **non-passive** `touchstart`/`wheel` listener forces the compositor to wait for the main thread to see whether `preventDefault()` is called. Declare listeners passive when you don’t need to cancel scrolling:
+Because Chromium handles scrolling on the compositor thread, scrolling remains smooth during long tasks, unless a **non-passive** `touchstart`/`wheel` listener forces the compositor to wait for the main thread to see whether `preventDefault()` is called. Chrome and Firefox already treat `wheel`, `mousewheel`, `touchstart` and `touchmove` listeners on `window`, `document` and `document.body` as passive by default, but listeners on any other element are not. Declare listeners passive explicitly when you don’t need to cancel scrolling:
 
 ```js
 window.addEventListener('wheel', onWheel, { passive: true });
@@ -882,7 +882,7 @@ function onTouchStart(event) {
 
 Chrome DevTools’ **Performance** panel records a trace of everything the renderer does. The key tracks:
 
-- **Main**: a flame chart of main-thread tasks. The top bar of each stack is a task; the colors distinguish scripting (yellow), rendering (purple: Recalculate Style, Layout, Pre-paint, Layerize) and painting (green: Paint, Commit).
+- **Main**: a flame chart of main-thread tasks. The top bar of each stack is a task; the colors distinguish scripting (yellow), rendering (purple, such as Recalculate Style and Layout) and painting (green, such as Paint). Which color category events like Pre-paint, Layerize and Commit fall into has varied between Chrome versions.
 - **Frames**: each produced frame and whether it was dropped or partially presented.
 - **Interactions**: each user interaction with its INP phases.
 - **Layout shifts**: each shift and the elements that moved.
@@ -911,7 +911,7 @@ Open the Command Menu (Ctrl/Cmd + Shift + P) and run **Show Rendering**:
 - **Paint flashing** highlights regions in green when they repaint. If a compositor-only animation is flashing green, it is not compositor-only.
 - **Layout shift regions** highlights shifted areas in blue.
 - **Layer borders** draws outlines around composited layers and tiles.
-- **Frame rendering stats** shows a live frame rate and GPU memory overlay.
+- **Frame rendering stats** shows a live overlay of frame rate and dropped frames (the exact contents vary between Chrome versions).
 
 The **Layers** panel (More tools → Layers) shows a 3D view of composited layers, each with its **compositing reasons**, memory estimate and paint count. Use it to find accidental layer explosions caused by overlap.
 
